@@ -21,14 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package logicgatessimulator.graphicscomponent;
-
-
+package logicgatessimulator;
 
 /**
  *
  * @author A4XX-COLCRI
  */
-public class AndPane {
-     a = new AndPane();
+public class And {
+    
 }

@@ -23,14 +23,18 @@
  */
 package logicgatessimulator;
 
-import java.io.File;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.geometry.Orientation;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 /**
@@ -38,37 +42,90 @@ import javafx.stage.Stage;
  * @author A4XX-COLCRI
  */
 public class LogicGatesSimulator extends Application {
+    /**
+     * The root node of the application.
+     */
+    Group root;
+    /**
+     * This is the top-level container child of root.
+     */
+    BorderPane mainContainer;
+    /**
+     * Contains the canvas and represents the drawing area.
+     */
+    Pane canvasContainer;
+    /**
+     * Defines where all the shapes will be drawn.
+     */
+    Canvas canvas;
+    /**
+     * Defines the toolbox.
+     */
+    FlowPane toolbox;
+    /**
+     * Defines the top bar menu.
+     */
+    MenuBar menu;
+    
     
     @Override
-    public void start(Stage stage) throws Exception {
-        /* Inizializzazione della scene*/
-        Parent root = FXMLLoader.load(getClass().getResource("LgsGui.fxml"));
-
-        Scene scene = new Scene(root);
-
-        stage.setScene(scene);
-        stage.show();
-
-        /* Inizializzazione degli elementi della toolbox */
-        // Caricamento delle immagini
+    public void start(Stage primaryStage) {
         /*
-        Image images[] = {
-            new Image(new File("@images/and.png").toURI().toString()),
-            new Image(new File("@images/or.png").toURI().toString()),
-            new Image(new File("@images/not.png").toURI().toString()),
-            new Image(new File("@images/nand.png").toURI().toString()),
-            new Image(new File("@images/nor.png").toURI().toString()),
-            new Image(new File("@images/xor.png").toURI().toString()),
-            new Image(new File("@images/xnor.png").toURI().toString())
-        };
-        
-        FlowPane toolbox = (FlowPane) scene.lookup("#toolbox");
-        for (Image image : images) {
-            // Inserisce le immagini in dei ImageView e li inserisce nella toolbox
-            ImageView iv = new ImageView();
-            iv.setImage(image);
+        Button btn = new Button();
+        btn.setText("Say 'Hello World'");
+        btn.setOnAction(new EventHandler<ActionEvent>() {
             
-        }*/
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Hello World!");
+            }
+        });
+        */
+        // Inizializzazione degli elementi grafici
+        root = new Group();
+        mainContainer = new BorderPane();
+        canvasContainer = new Pane();
+        canvas = new Canvas();
+        toolbox = new FlowPane(Orientation.VERTICAL);
+        toolbox.setPrefWrapLength(250);
+        toolbox.minWidth(Region.USE_COMPUTED_SIZE);
+        toolbox.minHeight(Region.USE_COMPUTED_SIZE);
+        toolbox.maxWidth(Region.USE_COMPUTED_SIZE);
+        toolbox.maxHeight(Region.USE_COMPUTED_SIZE);
+        toolbox.prefHeight(Region.USE_COMPUTED_SIZE);
+        toolbox.setStyle("-fx-background-color: red;");
+        
+        // Inizializzazione scena
+        Scene scene = new Scene(root, 1280, 800);
+        primaryStage.setTitle("Logic Gates Simulator");
+        primaryStage.setScene(scene);
+        
+        // Menu
+        menu = new MenuBar();
+        Menu menuFile = new Menu("File");
+        Menu menuEdit = new Menu("Edit");
+        Menu menuView = new Menu("View");
+        Menu menuAbout = new Menu("About");
+        menu.getMenus().addAll(menuFile, menuEdit, menuView, menuAbout);
+        
+        // Porte logiche nella toolbox 
+        ImageView andImage = new ImageView(getClass().getResource("images/and.png").toExternalForm());
+        ImageView nandImage = new ImageView(getClass().getResource("images/nand.png").toExternalForm());
+        ImageView orImage = new ImageView(getClass().getResource("images/or.png").toExternalForm());
+        ImageView norImage = new ImageView(getClass().getResource("images/nor.png").toExternalForm());
+        ImageView xorImage = new ImageView(getClass().getResource("images/xor.png").toExternalForm());
+        ImageView xnorImage = new ImageView(getClass().getResource("images/xnor.png").toExternalForm());
+        ImageView notImage = new ImageView(getClass().getResource("images/not.png").toExternalForm());
+        
+        // Strutturazione
+        mainContainer.setLeft(toolbox);
+        mainContainer.setRight(canvasContainer);
+        toolbox.getChildren().addAll(andImage, nandImage, orImage, norImage, xorImage, xnorImage, notImage);
+        canvasContainer.getChildren().add(canvas);
+        root.getChildren().add(mainContainer);
+
+        // Mostra la scena
+        primaryStage.show();
     }
 
     /**
@@ -77,4 +134,6 @@ public class LogicGatesSimulator extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
+    
 }
