@@ -1,0 +1,83 @@
+@startuml
+abstract class CircuitComponent{
+	
+}
+
+abstract class Graphics{
+		
+}
+class Wire{
+	
+}
+class Circuit{
+	
+}
+class Input{
+	
+}
+class Pin{
+	
+}
+
+package "Logic Gates" #DDDDDD {
+	class And{
+		
+	}
+	class Nand{
+		
+	}
+	class Or{
+		
+	}
+	class Nor{
+		
+	}
+	class Xor{
+		
+	}
+	class Xnor{
+		
+	}
+	class Not{
+		
+	}
+
+}
+
+Pin --* CircuitComponent
+Input --|> CircuitComponent
+CircuitComponent --|> Graphics
+CircuitComponent --* Circuit
+Wire --* Pin
+Pin --* Input
+"Logic Gates" --|> CircuitComponent
+
+@enduml
+class And{
+	
+}
+class Nand{
+	
+}
+class Or{
+	
+}
+class Nor{
+	
+}
+class Xor{
+	
+}
+class Xnor{
+	
+}
+class Not{
+	
+}
+And --|> CircuitComponent
+Nand --|> CircuitComponent
+Or --|> CircuitComponent
+Nor --|> CircuitComponent
+Xor --|> CircuitComponent
+Xnor --|> CircuitComponent
+Not --|> CircuitComponent
