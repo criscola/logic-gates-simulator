@@ -23,12 +23,9 @@
  */
 package lgs;
 
-import java.awt.Dimension;
-import java.awt.Point;
+import java.util.LinkedHashMap;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -49,7 +46,7 @@ import javafx.stage.Stage;
 import lgs.gates.And;
 import lgs.model.Circuit;
 import lgs.model.CircuitComponent;
-import lgs.model.Input;
+import lgs.utils.Component;
 
 /**
  *
@@ -58,35 +55,46 @@ import lgs.model.Input;
 public class LgsGui extends Application {
 
     /**
-     * The root node of the application.
-     */
-    Group root;
-    /**
      * This is the top-level container child of root.
      */
-    BorderPane mainContainer;
+    BorderPane mainContainer = new BorderPane();
+
     /**
      * Contains the canvas and represents the drawing area.
      */
-    ScrollPane canvasContainer;
+    ScrollPane canvasContainer = new ScrollPane();
+
     /**
      * Defines where all the shapes will be drawn.
      */
-    Canvas canvas;
+    Canvas canvas = new Canvas(1000, 700);
+
     /**
      * Contains all the left menu items (toolbox, ..).
      */
-    Accordion leftMenu;
+    Accordion leftMenu = new Accordion();
+
     /**
      * Defines the toolbox.
      */
-    FlowPane toolbox;
+    FlowPane toolbox = new FlowPane();
+
     /**
      * Defines the top bar menu.
      */
-    MenuBar menu;
+    MenuBar menu = new MenuBar();
 
+    /**
+     * Defines the circuit associated with a canvas.
+     */
     Circuit circuit = new Circuit();
+
+    /**
+     * Defines the current dragged element.
+     */
+    Component currentDragged = null;
+    
+    LinkedList<Gate> gate = 
 
     @Override
     public void start(Stage primaryStage) {
@@ -123,91 +131,89 @@ public class LgsGui extends Application {
         Menu menuAbout = new Menu("About");
         menu.getMenus().addAll(menuFile, menuEdit, menuView, menuAbout);
 
-        // Porte logiche nella toolbox 
-        ImageView andImage = new ImageView(getClass().getResource("images/and.png").toExternalForm());
-        ImageView nandImage = new ImageView(getClass().getResource("images/nand.png").toExternalForm());
-        ImageView orImage = new ImageView(getClass().getResource("images/or.png").toExternalForm());
-        ImageView norImage = new ImageView(getClass().getResource("images/nor.png").toExternalForm());
-        ImageView xorImage = new ImageView(getClass().getResource("images/xor.png").toExternalForm());
-        ImageView xnorImage = new ImageView(getClass().getResource("images/xnor.png").toExternalForm());
-        ImageView notImage = new ImageView(getClass().getResource("images/not.png").toExternalForm());
+        LinkedHashMap<Component, ImageView> toolboxElements = new LinkedHashMap<>();
 
-        makeDraggable(andImage);
-        makeDraggable(nandImage);
-        makeDraggable(orImage);
-        makeDraggable(norImage);
-        makeDraggable(xorImage);
-        makeDraggable(xnorImage);
-        makeDraggable(notImage);
+        // Porte logiche nella toolbox 
+        toolboxElements.put(Component.AND, new ImageView(getClass().getResource("gates/images/and.png").toExternalForm()));
+        toolboxElements.put(Component.NAND, new ImageView(getClass().getResource("gates/images/nand.png").toExternalForm()));
+        toolboxElements.put(Component.OR, new ImageView(getClass().getResource("gates/images/or.png").toExternalForm()));
+        toolboxElements.put(Component.NOR, new ImageView(getClass().getResource("gates/images/nor.png").toExternalForm()));
+        toolboxElements.put(Component.XOR, new ImageView(getClass().getResource("gates/images/xor.png").toExternalForm()));
+        toolboxElements.put(Component.XNOR, new ImageView(getClass().getResource("gates/images/xnor.png").toExternalForm()));
+        toolboxElements.put(Component.NOT, new ImageView(getClass().getResource("gates/images/not.png").toExternalForm()));
+
+        makeDraggable(toolboxElements);
 
         // Strutturazione
+        circuit = new Circuit();
         mainContainer.setLeft(leftMenu);
         mainContainer.setCenter(canvasContainer);
         mainContainer.setTop(menu);
-        toolbox.getChildren().addAll(andImage, nandImage, orImage, norImage, xorImage, xnorImage, notImage);
+        
+        // Aggiunge tutti gli elementi della hashmap alla toolbox
+        toolboxElements.entrySet().stream().forEach((image) -> {
+            toolbox.getChildren().add(image.getValue());
+        });
+        
         canvasContainer.setContent(canvas);
 
-        canvas.setOnDragOver(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                System.out.println("onDragOver");
-                if (event.getGestureSource() != canvasContainer) {
-                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                }
-
-                event.consume();
+        canvas.setOnDragOver((DragEvent event) -> {
+            System.out.println("onDragOver");
+            if (event.getGestureSource() != canvasContainer) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             }
+
+            event.consume();
         });
 
         canvas.setOnDragDropped((DragEvent event) -> {
             System.out.println("onDragDropped");
-            System.out.println("1");
-            And and = new And();
-            and.setOrigin(new Point((int) event.getX(), (int) event.getY()));
-            and.setDimension(new Dimension(60, 110));
-            circuit.addCircuitComponent(and);
-
-            repaint(gc);
-
+            // Qui
+            if (currentDragged == Component.AND) circuit.addCircuitComponent(new And(circuit));
             event.setDropCompleted(true);
+            currentDragged = null;
+            
             event.consume();
-
         });
-        
+
         canvas.setOnMouseClicked((MouseEvent event) -> {
             for (CircuitComponent element : circuit.getComponents()) {
                 //for (inp : element.getInputs()) {
-                    
+
                 //}
             }
             event.consume();
         });
-        
+
         // Mostra la scena
         primaryStage.show();
     }
 
     private void repaint(GraphicsContext gc) {
-        for (CircuitComponent element : circuit.getComponents()) {
+        // Disegno porte logiche
+        /*
+        for (Gate element : circuit.getComponents().element().) {
             System.out.println("x: " + element.getOrigin().x);
             gc.fillRect(element.getOrigin().x, element.getOrigin().y, 60, 100);
-        }
+        }*/
     }
 
-    private void makeDraggable(ImageView image) {
-        image.setOnDragDetected((MouseEvent event) -> {
-            /* drag was detected, start drag-and-drop gesture*/
-            System.out.println("onDragDetected");
+    private void makeDraggable(LinkedHashMap<Component, ImageView> images) {
+        images.entrySet().stream().forEach((image) -> {
+            image.getValue().setOnDragDetected((MouseEvent event) -> {
+                /* drag was detected, start drag-and-drop gesture*/
+                System.out.println("onDragDetected");
+                currentDragged = image.getKey();
+                /* allow any transfer mode */
+                Dragboard db = image.getValue().startDragAndDrop(TransferMode.ANY);
 
-            /* allow any transfer mode */
-            Dragboard db = image.startDragAndDrop(TransferMode.ANY);
+                /* put a image on dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(image.getValue().getImage());
+                db.setContent(content);
 
-            /* put a image on dragboard */
-            ClipboardContent content = new ClipboardContent();
-            content.putImage(image.getImage());
-            db.setContent(content);
-
-            event.consume();
+                event.consume();
+            });
         });
     }
 

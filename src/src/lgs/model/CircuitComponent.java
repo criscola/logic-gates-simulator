@@ -1,8 +1,6 @@
 package lgs.model;
 
 
-import java.awt.Dimension;
-import java.awt.Point;
 import java.util.LinkedList;
 
 /*
@@ -15,12 +13,12 @@ import java.util.LinkedList;
  *
  * @author Dias
  */
-public abstract class CircuitComponent extends Graphics {
+public abstract class CircuitComponent {
+    
     protected LinkedList<Pin> inputs;
     protected LinkedList<Pin> outputs;
 
     protected CircuitComponent(LinkedList<Pin> inputs, LinkedList<Pin> outputs) {
-        super(new Point(0, 0), new Dimension(0, 0));
         this.inputs = inputs;
         this.outputs = outputs;
     }
@@ -40,9 +38,11 @@ public abstract class CircuitComponent extends Graphics {
     public LinkedList<Pin> getOutputs() {
         return outputs;
     }
+    
     public boolean getResult(){
         return false;
     }
+    
     public void setResults(){
         
     }

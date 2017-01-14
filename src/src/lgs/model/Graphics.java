@@ -16,7 +16,7 @@ public abstract class Graphics {
 
     protected Point origin;
     protected Dimension size;
-
+    
     public Graphics(Point origin, Dimension size) {
         this.origin = origin;
         this.size = size;
@@ -37,5 +37,5 @@ public abstract class Graphics {
     public void setOrigin(Point origin) {
         this.origin = origin;
     }
-
+    public abstract void drawShape();
 }

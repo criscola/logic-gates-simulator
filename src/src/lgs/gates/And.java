@@ -19,7 +19,6 @@ public class And extends CircuitComponent {
         getInputs().add(new Input(this));
         getInputs().add(new Input(this));
         getOutputs().add(new Output(this));
-
     }
 
     @Override
