@@ -16,20 +16,27 @@ import lgs.model.Pin;
  * @author Cristiano Colangelo
  */
 public class PinG extends Graphics {
-    
+
     public static final int WIDTH = 20;
-    
+    private boolean isNot;
     Pin component;
-    
+
     public PinG(Pin component, int x, int y) {
         super(new Point(x, y), new Dimension(20, 1));
         this.component = component;
+        isNot = false;
     }
-    
+
+    public PinG(Pin component, int x, int y, boolean isNot) {
+        super(new Point(x, y), new Dimension(20, 1));
+        this.component = component;
+        this.isNot = isNot;
+    }
+
     @Override
     public void drawShape(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.strokeLine(super.getOrigin().x, super.getOrigin().y, super.getOrigin().x - super.getSize().width, super.getOrigin().y);
     }
-    
+
 }

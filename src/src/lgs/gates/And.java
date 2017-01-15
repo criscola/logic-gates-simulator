@@ -10,11 +10,12 @@ import lgs.model.*;
 
 /**
  *
- * @author Dias
+ * @author Diaspublic class And extends CircuitComponent {
+
  */
 public class And extends CircuitComponent {
 
-    public static final int DEFAULT_INPUT_COUNT = 2;   
+    public static final int DEFAULT_INPUT_COUNT = 3;   
     
     public And() {
         super(new LinkedList<>(), new LinkedList<>());

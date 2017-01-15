@@ -13,28 +13,28 @@ import java.util.LinkedList;
  */
 public class Circuit {
     private LinkedList<CircuitComponent> components;
-    private LinkedList<Output> inputs;
+    private LinkedList<Output> circuitInputs;
 
     public Circuit() {
         components = new LinkedList<>();
-        inputs = new LinkedList<>();
+        circuitInputs = new LinkedList<>();
     }
 
     public Circuit(LinkedList<CircuitComponent> components, LinkedList<Output> inputs) {
         this.components = components;
-        this.inputs = inputs;
+        this.circuitInputs = inputs;
     }
 
-    public void setInputs(LinkedList<Output> inputs) {
-        this.inputs = inputs;
+    public void setCircuitInputs(LinkedList<Output> circuitInputs) {
+        this.circuitInputs = circuitInputs;
     }
 
     public LinkedList<CircuitComponent> getComponents() {
         return components;
     }
 
-    public LinkedList<Output> getInputs() {
-        return inputs;
+    public LinkedList<Output> getCircuitInputs() {
+        return circuitInputs;
     }
 
     public void setComponents(LinkedList<CircuitComponent> components) {
@@ -45,7 +45,7 @@ public class Circuit {
         getComponents().add(component);
     }
     public void addInput(Pin input){
-        this.inputs.add((Output)input);
+        this.circuitInputs.add((Output)input);
     }
     /**
      * Metodo per attaccare l'output ad un input, quando questo cambia, cambieranno anche gli input attaccati ad esso

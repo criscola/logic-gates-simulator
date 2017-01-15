@@ -13,6 +13,8 @@ import java.util.Observable;
 public class Input implements Observer, Pin{
     private boolean data = false;
     private CircuitComponent attachedTo;
+    private boolean isInteractive = false;
+    
     
     @Override
     public void update(Observable o, Object arg) {

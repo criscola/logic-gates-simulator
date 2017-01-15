@@ -1816,11 +1816,20 @@ var dtjava = function() {
 
     // This is similar to version check rules except there is a range
     // over versions (3-7) that are not valid.
+    //
+    // JavaFX version requirements are always treated as "not earlier than this update".
+    // I.e. we expect
+    //     2.2.0 to match 2.2*, 2.2+, 2.1+, 2.1*, 2.0 and 1+
+    //           but not match 2.2.1+, 2.2.1*, 2.3*, 2.3+ or 1*
     function versionCheckFX(query, version) {
         var q = new Version(query, false);
 
-        if (parseInt(q.major) >= 3 && parseInt(q.major) <= 7) {
+        if (parseInt(q.major) >= 3 && parseInt(q.major) <= 7 && query.substr(-1) !== "+") {
             return false;
+        }
+
+        if (q.match == Match.Exact) {
+            q = new Version(query + "+", false);
         }
 
         var v = new Version(version, false);

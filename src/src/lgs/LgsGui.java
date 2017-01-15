@@ -25,7 +25,6 @@ package lgs;
 
 import java.util.LinkedHashMap;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -49,6 +48,8 @@ import lgs.model.Circuit;
 import lgs.model.CircuitComponent;
 import lgs.graphics.CircuitComponentG;
 import lgs.graphics.CircuitG;
+import lgs.model.Input;
+import lgs.model.Pin;
 import lgs.utils.Component;
 
 /**
@@ -179,16 +180,17 @@ public class LgsGui extends Application {
             event.consume();
             
         });
-        /*
+        
         canvas.setOnMouseClicked((MouseEvent event) -> {
-            for (CircuitComponent element : circuit.getComponents()) {
-                //for (inp : element.getInputs()) {
-
-                //}
+            for (int i = 0; i < circuit.getCircuitInputs().size(); i++) {
+                if (event.getX() == gCircuit.getInputsArea().x && event.getY() == ) {
+                    
+                }
             }
+            
             event.consume();
         });
-        */
+        
         // Mostra la scena
         primaryStage.show();
     }
