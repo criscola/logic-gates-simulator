@@ -70,7 +70,7 @@ public class LgsGui extends Application {
     /**
      * Defines where all the shapes will be drawn.
      */
-    Canvas canvas = new Canvas(1000, 700);
+    Canvas canvas;
 
     /**
      * Contains all the left menu items (toolbox, ..).
@@ -111,7 +111,7 @@ public class LgsGui extends Application {
         // Canvas container
         canvasContainer = new ScrollPane();
         canvasContainer.setStyle("-fx-background-color: lightblue; -fx-border-color: black; -fx-border-width: 1px;");
-        canvas = new Canvas(1000, 700);
+        canvas = new Canvas(1500, 1000);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         // Toolbox
@@ -179,7 +179,7 @@ public class LgsGui extends Application {
             event.consume();
             
         });
-
+        /*
         canvas.setOnMouseClicked((MouseEvent event) -> {
             for (CircuitComponent element : circuit.getComponents()) {
                 //for (inp : element.getInputs()) {
@@ -188,7 +188,7 @@ public class LgsGui extends Application {
             }
             event.consume();
         });
-
+        */
         // Mostra la scena
         primaryStage.show();
     }

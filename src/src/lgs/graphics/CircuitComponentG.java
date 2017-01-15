@@ -16,7 +16,7 @@ public abstract class CircuitComponentG extends Graphics {
     
     private final CircuitComponent component;
     
-        public CircuitComponent getComponent() {
+    public CircuitComponent getComponent() {
         return component;
     }
     
