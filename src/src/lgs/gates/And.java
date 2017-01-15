@@ -14,11 +14,16 @@ import lgs.model.*;
  */
 public class And extends CircuitComponent {
 
+    public static final int DEFAULT_INPUT_COUNT = 2;   
+    
     public And() {
         super(new LinkedList<>(), new LinkedList<>());
-        getInputs().add(new Input(this));
-        getInputs().add(new Input(this));
-        getOutputs().add(new Output(this));
+        
+        for (int i = 0; i < DEFAULT_INPUT_COUNT; i++) {
+            super.getInputs().add(new Input(this));
+        }
+        
+        super.getOutputs().add(new Output(this));
     }
 
     @Override

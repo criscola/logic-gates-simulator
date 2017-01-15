@@ -16,8 +16,8 @@ public class Circuit {
     private LinkedList<Output> inputs;
 
     public Circuit() {
-        components = new LinkedList<CircuitComponent>();
-        inputs = new LinkedList<Output>();
+        components = new LinkedList<>();
+        inputs = new LinkedList<>();
     }
 
     public Circuit(LinkedList<CircuitComponent> components, LinkedList<Output> inputs) {

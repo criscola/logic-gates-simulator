@@ -1,7 +1,10 @@
-package lgs.model;
+package lgs.graphics;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.LinkedList;
+import javafx.scene.canvas.GraphicsContext;
+import lgs.model.Pin;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,12 +17,14 @@ import java.awt.Point;
  */
 public abstract class Graphics {
 
-    protected Point origin;
-    protected Dimension size;
+    private Point origin;
+    private Dimension size;
+    private LinkedList<Graphics> children;
     
     public Graphics(Point origin, Dimension size) {
         this.origin = origin;
         this.size = size;
+        children = new LinkedList<>();
     }
 
     public Dimension getSize() {
@@ -30,12 +35,17 @@ public abstract class Graphics {
         return origin;
     }
 
-    public void setDimension(Dimension size) {
+    public void setSize(Dimension size) {
         this.size = size;
     }
 
     public void setOrigin(Point origin) {
         this.origin = origin;
     }
-    public abstract void drawShape();
+    
+    public LinkedList<Graphics> getChildren() {
+        return children;
+    }
+    
+    public abstract void drawShape(GraphicsContext gc);
 }

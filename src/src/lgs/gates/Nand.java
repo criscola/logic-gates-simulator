@@ -6,7 +6,6 @@
 package lgs.gates;
 
 import java.util.LinkedList;
-import lgs.model.Pin;
 import lgs.model.CircuitComponent;
 import lgs.model.Input;
 import lgs.model.Output;

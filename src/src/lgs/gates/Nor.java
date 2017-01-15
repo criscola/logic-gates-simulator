@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import lgs.model.CircuitComponent;
 import lgs.model.Input;
 import lgs.model.Output;
-import lgs.model.Pin;
 
 /**
  *

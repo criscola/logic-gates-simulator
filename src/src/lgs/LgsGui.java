@@ -25,6 +25,7 @@ package lgs;
 
 import java.util.LinkedHashMap;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -43,9 +44,11 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-import lgs.gates.And;
+import lgs.graphics.gates.AndG;
 import lgs.model.Circuit;
 import lgs.model.CircuitComponent;
+import lgs.graphics.CircuitComponentG;
+import lgs.graphics.CircuitG;
 import lgs.utils.Component;
 
 /**
@@ -93,8 +96,11 @@ public class LgsGui extends Application {
      * Defines the current dragged element.
      */
     Component currentDragged = null;
-    
-    LinkedList<Gate> gate = 
+
+    /**
+     * Defines the drawable circuit.
+     */
+    CircuitG gCircuit = new CircuitG();
 
     @Override
     public void start(Stage primaryStage) {
@@ -120,6 +126,7 @@ public class LgsGui extends Application {
 
         // Inizializzazione scena
         Scene scene = new Scene(mainContainer, 1280, 800);
+        scene.getStylesheets().add(this.getClass().getResource("style/style.css").toExternalForm());
         primaryStage.setTitle("Logic Gates Simulator");
         primaryStage.setScene(scene);
 
@@ -145,35 +152,32 @@ public class LgsGui extends Application {
         makeDraggable(toolboxElements);
 
         // Strutturazione
-        circuit = new Circuit();
         mainContainer.setLeft(leftMenu);
         mainContainer.setCenter(canvasContainer);
         mainContainer.setTop(menu);
-        
+
         // Aggiunge tutti gli elementi della hashmap alla toolbox
         toolboxElements.entrySet().stream().forEach((image) -> {
             toolbox.getChildren().add(image.getValue());
         });
-        
+
         canvasContainer.setContent(canvas);
 
         canvas.setOnDragOver((DragEvent event) -> {
-            System.out.println("onDragOver");
-            if (event.getGestureSource() != canvasContainer) {
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            }
+            if (event.getGestureSource() != canvasContainer) event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
 
             event.consume();
         });
 
         canvas.setOnDragDropped((DragEvent event) -> {
-            System.out.println("onDragDropped");
-            // Qui
-            if (currentDragged == Component.AND) circuit.addCircuitComponent(new And(circuit));
-            event.setDropCompleted(true);
-            currentDragged = null;
+            if (currentDragged == Component.AND) gCircuit.components.add(new AndG((int) event.getX(), (int) event.getY()));
             
+            currentDragged = null;
+            repaint(canvas.getGraphicsContext2D());
+            
+            event.setDropCompleted(true);
             event.consume();
+            
         });
 
         canvas.setOnMouseClicked((MouseEvent event) -> {
@@ -191,23 +195,16 @@ public class LgsGui extends Application {
 
     private void repaint(GraphicsContext gc) {
         // Disegno porte logiche
-        /*
-        for (Gate element : circuit.getComponents().element().) {
-            System.out.println("x: " + element.getOrigin().x);
-            gc.fillRect(element.getOrigin().x, element.getOrigin().y, 60, 100);
-        }*/
+        for (CircuitComponentG element : gCircuit.components) {
+            element.drawShape(gc);
+        }
     }
 
     private void makeDraggable(LinkedHashMap<Component, ImageView> images) {
         images.entrySet().stream().forEach((image) -> {
             image.getValue().setOnDragDetected((MouseEvent event) -> {
-                /* drag was detected, start drag-and-drop gesture*/
-                System.out.println("onDragDetected");
                 currentDragged = image.getKey();
-                /* allow any transfer mode */
                 Dragboard db = image.getValue().startDragAndDrop(TransferMode.ANY);
-
-                /* put a image on dragboard */
                 ClipboardContent content = new ClipboardContent();
                 content.putImage(image.getValue().getImage());
                 db.setContent(content);
