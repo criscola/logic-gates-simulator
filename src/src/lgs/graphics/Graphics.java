@@ -21,6 +21,10 @@ public abstract class Graphics {
     private Dimension size;
     private LinkedList<Graphics> children;
     
+    public Graphics() {
+        
+    }
+    
     public Graphics(Point origin, Dimension size) {
         this.origin = origin;
         this.size = size;

@@ -15,6 +15,7 @@ import lgs.gates.And;
 import lgs.graphics.Graphics;
 import lgs.graphics.PinG;
 import lgs.model.Input;
+import lgs.model.Output;
 
 /**
  *
@@ -43,14 +44,11 @@ public class AndG extends CircuitComponentG {
         // Disegno del simbolo europeo
         gc.strokeRect(super.getOrigin().x, super.getOrigin().y, super.getSize().width, super.getSize().height);
 
-        // Disegno del rettangolo
+        // Creazione e disegno degli inputs
         for (int i = 1; i <= inputCount; i++) {
             children.add(new PinG(new Input(super.getComponent()), x, y + (height / inputCount) * i - (height / inputCount) / 2));
         }
         
-        for (int i = 0; i < super.getComponent().getInputs().size(); i++) {
-            
-        }
         children.add(new PinG(new Input(super.getComponent()), x + width + PinG.WIDTH, y + (height / 2)));
         //super.getChildren
         // Disegno degli inputs e outputs

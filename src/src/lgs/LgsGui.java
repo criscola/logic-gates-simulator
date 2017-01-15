@@ -45,11 +45,9 @@ import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import lgs.graphics.gates.AndG;
 import lgs.model.Circuit;
-import lgs.model.CircuitComponent;
 import lgs.graphics.CircuitComponentG;
 import lgs.graphics.CircuitG;
-import lgs.model.Input;
-import lgs.model.Pin;
+import lgs.graphics.PinG;
 import lgs.utils.Component;
 
 /**
@@ -165,39 +163,47 @@ public class LgsGui extends Application {
         canvasContainer.setContent(canvas);
 
         canvas.setOnDragOver((DragEvent event) -> {
-            if (event.getGestureSource() != canvasContainer) event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            if (event.getGestureSource() != canvasContainer) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
 
             event.consume();
         });
 
         canvas.setOnDragDropped((DragEvent event) -> {
-            if (currentDragged == Component.AND) gCircuit.components.add(new AndG((int) event.getX(), (int) event.getY()));
-            
+            if (currentDragged == Component.AND) {
+                gCircuit.getComponents().add(new AndG((int) event.getX(), (int) event.getY()));
+            }
+
             currentDragged = null;
             repaint(canvas.getGraphicsContext2D());
-            
+
             event.setDropCompleted(true);
             event.consume();
-            
+
         });
-        
+
         canvas.setOnMouseClicked((MouseEvent event) -> {
-            for (int i = 0; i < circuit.getCircuitInputs().size(); i++) {
-                if (event.getX() == gCircuit.getInputsArea().x && event.getY() == ) {
-                    
+            // Codice che sarà da aggiornare in futuro anche per i tipi Graphics che non saranno però parte del circuito.
+            for (int i = 0; i < gCircuit.getComponents().size(); i++) {
+                for (int j = 0; j < gCircuit.getComponents().get(i).getChildren().size(); j++) {
+                    // Controlla che il figlio della porta logica sia un PinG per evitare di buggare il programma con un downcast sbagliato
+                    if (gCircuit.getComponents().get(i).getChildren().getClass().isInstance(new PinG())) {
+                        PinG pin = (PinG) gCircuit.getComponents().get(i).getChildren().get(j);
+                    }
                 }
             }
-            
             event.consume();
         });
         
         // Mostra la scena
         primaryStage.show();
+
     }
 
     private void repaint(GraphicsContext gc) {
         // Disegno porte logiche
-        for (CircuitComponentG element : gCircuit.components) {
+        for (CircuitComponentG element : gCircuit.getComponents()) {
             element.drawShape(gc);
         }
     }

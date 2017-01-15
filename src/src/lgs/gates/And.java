@@ -15,7 +15,7 @@ import lgs.model.*;
  */
 public class And extends CircuitComponent {
 
-    public static final int DEFAULT_INPUT_COUNT = 3;   
+    public static final int DEFAULT_INPUT_COUNT = 2;   
     
     public And() {
         super(new LinkedList<>(), new LinkedList<>());
