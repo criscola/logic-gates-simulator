@@ -43,6 +43,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import lgs.gates.And;
 import lgs.graphics.gates.AndG;
 import lgs.model.Circuit;
 import lgs.graphics.CircuitComponentG;
@@ -50,6 +51,7 @@ import lgs.graphics.CircuitG;
 import lgs.graphics.InputG;
 import lgs.graphics.OutputG;
 import lgs.graphics.PinG;
+import lgs.model.CircuitComponent;
 import lgs.utils.Component;
 
 /**
@@ -103,7 +105,8 @@ public class LgsGui extends Application {
      */
     CircuitG gCircuit = new CircuitG();
 
-    PinG currentSelectedPin;
+    InputG currentSelectedInput;
+    OutputG currentSelectedOutput;
 
     @Override
     public void start(Stage primaryStage) {
@@ -190,16 +193,40 @@ public class LgsGui extends Application {
         canvas.setOnMouseClicked((MouseEvent event) -> {
             for (int i = 0; i < gCircuit.getComponents().size(); i++) {
                 for (int j = 0; j < gCircuit.getComponents().get(i).getChildren().size(); j++) {
-                    Class<?> c = gCircuit.getComponents().get(i).getChildren().get(j).getClass();
-                    if (c.isInstance(new InputG()) || c.isInstance(new OutputG())) {
-                        if (event.isControlDown() && currentSelectedPin == null) {
-                            currentSelectedPin = (InputG) gCircuit.getComponents().get(i).getChildren().get(j);
-                        } else {
-                            InputG pin = (InputG) gCircuit.getComponents().get(i).getChildren().get(j);
-                            if (pin.getDot().contains(event.getX(), event.getY())) {
-                                pin.getComponent().setData(!pin.getComponent().getData());
+                    // Memorizza il pin corrente
+                    PinG pin = (PinG) gCircuit.getComponents().get(i).getChildren().get(j);
+                    // Se l'utente ha cliccato sul pin corrente, esegui il codice relativo ad essi
+                    if (pin.getDot().contains(event.getX(), event.getY())) {
+                        Class<?> c = gCircuit.getComponents().get(i).getChildren().get(j).getClass();
+                        // Se l'utente tiene premuto ctrl e non ha ancora selezionato nessun InputG precedente
+                        // assegna a currentSelctedInput il pin selezionato
+                        if (c.isInstance(new InputG())) {
+                            InputG inputPin = (InputG) pin;
+                            if (event.isControlDown()) {
+                                if (currentSelectedOutput != null) {
+                                    currentSelectedOutput.getComponent().addObserver(currentSelectedInput.getComponent());
+                                } else {
+                                    currentSelectedInput = (InputG) pin;
+                                }
+                            } else {
+                                inputPin.getComponent().setData(!inputPin.getComponent().getData());
                             }
+                            //currentSelectedInput = (InputG) gCircuit.getComponents().get(i).getChildren().get(j);
                         }
+                        
+                        
+                        
+                        /*
+                        if (c.isInstance(new InputG()) || c.isInstance(new OutputG())) {
+                            if (event.isControlDown() && currentSelectedPin == null) {
+                                currentSelectedPin = (InputG) gCircuit.getComponents().get(i).getChildren().get(j);
+                            } else {
+                                InputG pin = (InputG) gCircuit.getComponents().get(i).getChildren().get(j);
+                                if (pin.getDot().contains(event.getX(), event.getY())) {
+                                    pin.getComponent().setData(!pin.getComponent().getData());
+                                }
+                            }
+                        }*/
                     }
                 }
             }
@@ -218,6 +245,7 @@ public class LgsGui extends Application {
             case AND:
                 System.out.println(event.getX() + " " + event.getY());
                 gCircuit.addComponent(new AndG((int) event.getX(), (int) event.getY()));
+                And a = (And) gCircuit.getCircuit().getComponents().get(0);
                 break;
             case OR:
                 break;
@@ -238,6 +266,9 @@ public class LgsGui extends Application {
         // Disegno porte logiche
         for (CircuitComponentG element : gCircuit.getComponents()) {
             element.drawShape(gc);
+        }
+        for (CircuitComponent element : gCircuit.getCircuit().getComponents()) {
+            
         }
     }
 

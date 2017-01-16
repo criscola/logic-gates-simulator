@@ -15,35 +15,31 @@ import java.util.LinkedList;
  */
 public abstract class CircuitComponent {
     
-    protected LinkedList<Pin> inputs;
-    protected LinkedList<Pin> outputs;
+    protected LinkedList<Input> inputs;
+    protected Output output;
 
-    protected CircuitComponent(LinkedList<Pin> inputs, LinkedList<Pin> outputs) {
+    protected CircuitComponent(LinkedList<Input> inputs, Output output) {
         this.inputs = inputs;
-        this.outputs = outputs;
+        this.output = output;
     }
     
-    public LinkedList<Pin> getInputs() {
+    public LinkedList<Input> getInputs() {
         return inputs;
     }
 
-    public void setInputs(LinkedList<Pin> inputs) {
+    public void setInputs(LinkedList<Input> inputs) {
         this.inputs = inputs;
     }
 
-    public void setOutputs(LinkedList<Pin> outputs) {
-        this.outputs = outputs;
+    public void setOutputs(Output output) {
+        this.output = output;
     }
 
-    public LinkedList<Pin> getOutputs() {
-        return outputs;
+    public Pin getOutputs() {
+        return output;
     }
     
-    public boolean getResult(){
-        return false;
-    }
+    public abstract boolean getResult();
     
-    public void setResults(){
-        
-    }
+    public abstract void setResults();
 }

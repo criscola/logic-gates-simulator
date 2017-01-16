@@ -16,10 +16,12 @@ import lgs.model.Output;
  */
 public class Nor extends CircuitComponent{
     public Nor() {
-        super(new LinkedList<>(), new LinkedList<>());
+        super(new LinkedList<>(), new Output());
+        /*
         getInputs().add(new Input(this));
         getInputs().add(new Input(this));
         getOutputs().add(new Output(this));
+        */
     }
     
     
@@ -28,6 +30,6 @@ public class Nor extends CircuitComponent{
         return !(inputs.get(0).getData() || inputs.get(1).getData());
     }
     public void setResults(){
-        getOutputs().get(0).setData(getResult());
+        output.setData(getResult());
     }
 }

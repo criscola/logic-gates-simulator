@@ -31,6 +31,7 @@ public class CircuitG {
     }
 
     public void addComponent(CircuitComponentG component) {
+        circuit.addCircuitComponent(component.getComponent());
         components.add(component);
     }
 }

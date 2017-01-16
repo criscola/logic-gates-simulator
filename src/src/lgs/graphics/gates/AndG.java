@@ -39,8 +39,10 @@ public class AndG extends CircuitComponentG {
         int inputCount = super.getComponent().getInputs().size();
 
         // Istanza degli inputs
+        int c = 0;
         for (int i = 1; i <= inputCount; i++) {
-            children.add(new InputG(new Input(super.getComponent()), x, y + (height / inputCount) * i - (height / inputCount) / 2));
+            children.add(new InputG(super.getComponent().getInputs().get(c), x, y + (height / inputCount) * i - (height / inputCount) / 2));
+            c++;
         }
 
         // Istanza degll'output

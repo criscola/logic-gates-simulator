@@ -17,15 +17,17 @@ import lgs.model.Output;
 public class Nand extends CircuitComponent{
 
     public Nand() {
-        super(new LinkedList<>(), new LinkedList<>());
+        super(new LinkedList<>(), new Output());
+        /*
         getInputs().add(new Input(this));
         getInputs().add(new Input(this));
         getOutputs().add(new Output(this));
+        */
     }
     public boolean getResult(){
         return !(getInputs().get(0).getData() && getInputs().get(0).getData());
     }
     public void setResults(){
-        getOutputs().get(0).setData(getResult());
+        output.setData(getResult());
     }
 }

@@ -10,8 +10,8 @@ import java.util.Observable;
  * @author Dias
  */
 public class Output extends Observable implements Pin {
+    
     private boolean data = false;
-
     private CircuitComponent attachedTo;
     
     public Output() {
@@ -21,22 +21,27 @@ public class Output extends Observable implements Pin {
     public Output(CircuitComponent attachedTo) {
         this.attachedTo = attachedTo;
     }
-
+    
+    public void changedPinInput() {
+        setChanged();
+        notifyObservers(this);
+        System.out.println("output changed");
+    }
+    
+    @Override
     public boolean getData() {
         return data;
     }
     
+    @Override
     public void setData(boolean data) {
-        if(getData() != data){
+        if (getData() != data){
             this.data = data;
             setChanged();
             notifyObservers(this);
         }
     }
-    public void changedPinInput() {
-        setChanged();
-        notifyObservers(this);
-    }
+    
     @Override
     public CircuitComponent getAttachedTo() {
         return this.attachedTo;
