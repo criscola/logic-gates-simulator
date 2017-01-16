@@ -19,7 +19,7 @@ public class And extends CircuitComponent {
     
     public And() {
         super(new LinkedList<>(), new Output());
-        
+        super.getOutput().setAttachedTo(this);
         for (int i = 0; i < DEFAULT_INPUT_COUNT; i++) {
             super.getInputs().add(new Input(this));
         }
@@ -27,9 +27,7 @@ public class And extends CircuitComponent {
 
     @Override
     public boolean getResult() {
-        System.out.println("metodo gR chiamato");
         boolean a = inputs.get(0).getData() && inputs.get(1).getData();
-        System.out.println("r: " + a);
         return inputs.get(0).getData() && inputs.get(1).getData();
     }
 

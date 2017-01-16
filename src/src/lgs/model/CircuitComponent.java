@@ -31,11 +31,11 @@ public abstract class CircuitComponent {
         this.inputs = inputs;
     }
 
-    public void setOutputs(Output output) {
+    public void setOutput(Output output) {
         this.output = output;
     }
 
-    public Pin getOutputs() {
+    public Output getOutput() {
         return output;
     }
     

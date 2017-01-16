@@ -24,8 +24,6 @@ import lgs.model.Output;
  */
 public class AndG extends CircuitComponentG {
 
-    int id = 0;
-
     public AndG(int x, int y) {
         super(new And());
 
@@ -46,7 +44,7 @@ public class AndG extends CircuitComponentG {
         }
 
         // Istanza degll'output
-        children.add(new OutputG(new Output(super.getComponent()), x + width, y + (height / 2)));
+        children.add(new OutputG(super.getComponent().getOutput(), x + width, y + (height / 2)));
         //children.add(new PinG(new Input(super.getComponent(), x + width + PinG.WIDTH, y + (height / 2))));
 
     }

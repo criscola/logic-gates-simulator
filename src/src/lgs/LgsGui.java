@@ -203,9 +203,11 @@ public class LgsGui extends Application {
                         if (c.isInstance(new InputG())) {
                             InputG inputPin = (InputG) pin;
                             if (event.isControlDown()) {
-                                if (currentSelectedOutput != null) {
+                                if (currentSelectedInput != null) {
+                                    System.out.println("aaa");
                                     currentSelectedOutput.getComponent().addObserver(currentSelectedInput.getComponent());
                                 } else {
+                                    System.out.println("bbb");
                                     currentSelectedInput = (InputG) pin;
                                 }
                             } else {
@@ -230,7 +232,7 @@ public class LgsGui extends Application {
                     }
                 }
             }
-
+            System.out.println(currentSelectedInput);
             repaint(gc);
             event.consume();
         });
@@ -245,7 +247,6 @@ public class LgsGui extends Application {
             case AND:
                 System.out.println(event.getX() + " " + event.getY());
                 gCircuit.addComponent(new AndG((int) event.getX(), (int) event.getY()));
-                And a = (And) gCircuit.getCircuit().getComponents().get(0);
                 break;
             case OR:
                 break;
