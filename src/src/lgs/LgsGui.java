@@ -47,6 +47,8 @@ import lgs.graphics.gates.AndG;
 import lgs.model.Circuit;
 import lgs.graphics.CircuitComponentG;
 import lgs.graphics.CircuitG;
+import lgs.graphics.InputG;
+import lgs.graphics.OutputG;
 import lgs.graphics.PinG;
 import lgs.utils.Component;
 
@@ -100,6 +102,8 @@ public class LgsGui extends Application {
      * Defines the drawable circuit.
      */
     CircuitG gCircuit = new CircuitG();
+
+    PinG currentSelectedPin;
 
     @Override
     public void start(Stage primaryStage) {
@@ -172,7 +176,7 @@ public class LgsGui extends Application {
 
         canvas.setOnDragDropped((DragEvent event) -> {
             if (currentDragged == Component.AND) {
-                gCircuit.getComponents().add(new AndG((int) event.getX(), (int) event.getY()));
+                addToCircuit(Component.AND, event);
             }
 
             currentDragged = null;
@@ -182,23 +186,52 @@ public class LgsGui extends Application {
             event.consume();
 
         });
-
+        // TODO: DA SISTEMARE!
         canvas.setOnMouseClicked((MouseEvent event) -> {
-            // Codice che sarà da aggiornare in futuro anche per i tipi Graphics che non saranno però parte del circuito.
             for (int i = 0; i < gCircuit.getComponents().size(); i++) {
                 for (int j = 0; j < gCircuit.getComponents().get(i).getChildren().size(); j++) {
-                    // Controlla che il figlio della porta logica sia un PinG per evitare di buggare il programma con un downcast sbagliato
-                    if (gCircuit.getComponents().get(i).getChildren().getClass().isInstance(new PinG())) {
-                        PinG pin = (PinG) gCircuit.getComponents().get(i).getChildren().get(j);
+                    Class<?> c = gCircuit.getComponents().get(i).getChildren().get(j).getClass();
+                    if (c.isInstance(new InputG()) || c.isInstance(new OutputG())) {
+                        if (event.isControlDown() && currentSelectedPin == null) {
+                            currentSelectedPin = (InputG) gCircuit.getComponents().get(i).getChildren().get(j);
+                        } else {
+                            InputG pin = (InputG) gCircuit.getComponents().get(i).getChildren().get(j);
+                            if (pin.getDot().contains(event.getX(), event.getY())) {
+                                pin.getComponent().setData(!pin.getComponent().getData());
+                            }
+                        }
                     }
                 }
             }
+
+            repaint(gc);
             event.consume();
         });
-        
+
         // Mostra la scena
         primaryStage.show();
 
+    }
+
+    private void addToCircuit(Component componentType, DragEvent event) {
+        switch (componentType) {
+            case AND:
+                System.out.println(event.getX() + " " + event.getY());
+                gCircuit.addComponent(new AndG((int) event.getX(), (int) event.getY()));
+                break;
+            case OR:
+                break;
+            case NOT:
+                break;
+            case XOR:
+                break;
+            case NAND:
+                break;
+            case NOR:
+                break;
+            case XNOR:
+                break;
+        }
     }
 
     private void repaint(GraphicsContext gc) {

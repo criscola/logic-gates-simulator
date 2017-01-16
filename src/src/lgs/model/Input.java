@@ -23,6 +23,10 @@ public class Input implements Observer, Pin{
         System.out.println((this) + " has changed");
     }
     
+    public Input() {
+            
+    }
+    
     public Input(CircuitComponent attachedTo) {
         this.attachedTo = attachedTo;
     }

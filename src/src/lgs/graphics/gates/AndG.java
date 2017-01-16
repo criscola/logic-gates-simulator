@@ -13,7 +13,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import lgs.gates.And;
 import lgs.graphics.Graphics;
-import lgs.graphics.PinG;
+import lgs.graphics.InputG;
+import lgs.graphics.OutputG;
 import lgs.model.Input;
 import lgs.model.Output;
 
@@ -23,40 +24,39 @@ import lgs.model.Output;
  */
 public class AndG extends CircuitComponentG {
 
+    int id = 0;
+
     public AndG(int x, int y) {
         super(new And());
+
         super.setOrigin(new Point(x, y));
         super.setSize(new Dimension(80, super.getComponent().getInputs().size() * 50));
+
+        // Metodi di convenienza
+        LinkedList<Graphics> children = super.getChildren();
+        int width = super.getSize().width;
+        int height = super.getSize().height;
+        int inputCount = super.getComponent().getInputs().size();
+
+        // Istanza degli inputs
+        for (int i = 1; i <= inputCount; i++) {
+            children.add(new InputG(new Input(super.getComponent()), x, y + (height / inputCount) * i - (height / inputCount) / 2));
+        }
+
+        // Istanza degll'output
+        children.add(new OutputG(new Output(super.getComponent()), x + width, y + (height / 2)));
+        //children.add(new PinG(new Input(super.getComponent(), x + width + PinG.WIDTH, y + (height / 2))));
+
     }
 
     @Override
     public void drawShape(GraphicsContext gc) {
-        LinkedList<Graphics> children = super.getChildren();
-        int x = super.getOrigin().x;
-        int y = super.getOrigin().y;
-        int width = super.getSize().width;
-        int height = super.getSize().height;
-        int inputCount = super.getComponent().getInputs().size();
-        
-        System.out.println(inputCount);
         gc.setFill(Color.BLACK);
 
         // Disegno del simbolo europeo
         gc.strokeRect(super.getOrigin().x, super.getOrigin().y, super.getSize().width, super.getSize().height);
 
-        // Creazione e disegno degli inputs
-        for (int i = 1; i <= inputCount; i++) {
-            children.add(new PinG(new Input(super.getComponent()), x, y + (height / inputCount) * i - (height / inputCount) / 2));
-        }
-        
-        children.add(new PinG(new Input(super.getComponent()), x + width + PinG.WIDTH, y + (height / 2)));
-        //super.getChildren
-        // Disegno degli inputs e outputs
-        for (int i = 0; i < children.size(); i++) {
-            children.get(i).drawShape(gc);
-        }
-
-        //System.gc();
+        drawChildren(gc);
     }
 
 }

@@ -14,21 +14,26 @@ public class Output extends Observable implements Pin {
 
     private CircuitComponent attachedTo;
     
+    public Output() {
+        
+    }
+    
     public Output(CircuitComponent attachedTo) {
         this.attachedTo = attachedTo;
     }
 
-    public boolean getData(){
+    public boolean getData() {
         return data;
     }
-    public void setData(boolean data){
+    
+    public void setData(boolean data) {
         if(getData() != data){
             this.data = data;
             setChanged();
             notifyObservers(this);
         }
     }
-    public void changedPinInput(){
+    public void changedPinInput() {
         setChanged();
         notifyObservers(this);
     }

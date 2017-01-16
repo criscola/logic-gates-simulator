@@ -20,11 +20,11 @@ public abstract class Graphics {
     private Point origin;
     private Dimension size;
     private LinkedList<Graphics> children;
-    
+
     public Graphics() {
-        
+
     }
-    
+
     public Graphics(Point origin, Dimension size) {
         this.origin = origin;
         this.size = size;
@@ -46,10 +46,17 @@ public abstract class Graphics {
     public void setOrigin(Point origin) {
         this.origin = origin;
     }
-    
+
     public LinkedList<Graphics> getChildren() {
         return children;
     }
-    
+
+    public void drawChildren(GraphicsContext gc) {
+        // Disegno degli inputs e outputs
+        for (int i = 0; i < getChildren().size(); i++) {
+            getChildren().get(i).drawShape(gc);
+        }
+    }
+
     public abstract void drawShape(GraphicsContext gc);
 }
