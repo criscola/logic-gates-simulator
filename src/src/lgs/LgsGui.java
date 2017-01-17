@@ -201,11 +201,11 @@ public class LgsGui extends Application {
                     if (pin.getDot().contains(event.getX(), event.getY())) {
                         // L'utente premeva anche il tasto control?
                         if (event.isControlDown()) {
-                            // Se l'utente ha già selezionato un pin in precedenza
-                            if (currentSelectedPin != null) {
+                            // Se l'utente ha già selezionato un pin in precedenza e non ha selezionato lo stesso
+                            if (currentSelectedPin != null && !currentSelectedPin.equals(pin)) {
                                 InputG inputPin;
                                 OutputG outputPin;
-                                if (currentSelectedPin.getClass().isInstance(new InputG())) {
+                                if (currentSelectedPin.getClass().isInstance(new InputG()) && pin.getClass().isInstance(new OutputG())) {
                                     inputPin = (InputG) currentSelectedPin;
                                     outputPin = (OutputG) pin;
                                 } else {
