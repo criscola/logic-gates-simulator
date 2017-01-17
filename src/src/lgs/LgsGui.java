@@ -43,7 +43,6 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-import lgs.gates.And;
 import lgs.graphics.gates.AndG;
 import lgs.model.Circuit;
 import lgs.graphics.CircuitComponentG;
@@ -51,6 +50,7 @@ import lgs.graphics.CircuitG;
 import lgs.graphics.InputG;
 import lgs.graphics.OutputG;
 import lgs.graphics.PinG;
+import lgs.graphics.WireG;
 import lgs.model.CircuitComponent;
 import lgs.utils.Component;
 
@@ -105,8 +105,7 @@ public class LgsGui extends Application {
      */
     CircuitG gCircuit = new CircuitG();
 
-    InputG currentSelectedInput;
-    OutputG currentSelectedOutput;
+    PinG currentSelectedPin;
 
     @Override
     public void start(Stage primaryStage) {
@@ -189,50 +188,50 @@ public class LgsGui extends Application {
             event.consume();
 
         });
-        // TODO: DA SISTEMARE!
+        
         canvas.setOnMouseClicked((MouseEvent event) -> {
-            for (int i = 0; i < gCircuit.getComponents().size(); i++) {
-                for (int j = 0; j < gCircuit.getComponents().get(i).getChildren().size(); j++) {
-                    // Memorizza il pin corrente
+          
+            int componentCount = gCircuit.getComponents().size();
+            // TODO: AGGIUNGERE CONTROLLI CASTING OGGETTI!
+            for (int i = 0; i < componentCount; i++) {
+                int childrenCount = gCircuit.getComponents().get(i).getChildren().size();
+                for (int j = 0; j < childrenCount; j++) {
                     PinG pin = (PinG) gCircuit.getComponents().get(i).getChildren().get(j);
-                    // Se l'utente ha cliccato sul pin corrente, esegui il codice relativo ad essi
+                    // L'utente ha premuto sul pin di una porta logica?
                     if (pin.getDot().contains(event.getX(), event.getY())) {
-                        Class<?> c = gCircuit.getComponents().get(i).getChildren().get(j).getClass();
-                        // Se l'utente tiene premuto ctrl e non ha ancora selezionato nessun InputG precedente
-                        // assegna a currentSelctedInput il pin selezionato
-                        if (c.isInstance(new InputG())) {
-                            InputG inputPin = (InputG) pin;
-                            if (event.isControlDown()) {
-                                if (currentSelectedInput != null) {
-                                    System.out.println("aaa");
-                                    currentSelectedOutput.getComponent().addObserver(currentSelectedInput.getComponent());
+                        // L'utente premeva anche il tasto control?
+                        if (event.isControlDown()) {
+                            // Se l'utente ha già selezionato un pin in precedenza
+                            if (currentSelectedPin != null) {
+                                InputG inputPin;
+                                OutputG outputPin;
+                                if (currentSelectedPin.getClass().isInstance(new InputG())) {
+                                    inputPin = (InputG) currentSelectedPin;
+                                    outputPin = (OutputG) pin;
                                 } else {
-                                    System.out.println("bbb");
-                                    currentSelectedInput = (InputG) pin;
+                                    inputPin = (InputG) pin;
+                                    outputPin = (OutputG) currentSelectedPin;
                                 }
+                                // Collega insieme i 2 pin
+                                outputPin.getComponent().addObserver(inputPin.getComponent());
+                                currentSelectedPin = null;
+                                int x1 = inputPin.getOrigin().x - PinG.WIDTH;
+                                int y1 = inputPin.getOrigin().y;
+                                int x2 = outputPin.getOrigin().x;
+                                int y2 = outputPin.getOrigin().y;
+                                gCircuit.getWires().add(new WireG(x1, y1, x2, y2, inputPin, outputPin));
                             } else {
+                                currentSelectedPin = pin;
+                            }
+                        } else {
+                            if (!pin.isWired() && pin.getClass().isInstance(new InputG())) {
+                                InputG inputPin = (InputG) pin;
                                 inputPin.getComponent().setData(!inputPin.getComponent().getData());
                             }
-                            //currentSelectedInput = (InputG) gCircuit.getComponents().get(i).getChildren().get(j);
                         }
-                        
-                        
-                        
-                        /*
-                        if (c.isInstance(new InputG()) || c.isInstance(new OutputG())) {
-                            if (event.isControlDown() && currentSelectedPin == null) {
-                                currentSelectedPin = (InputG) gCircuit.getComponents().get(i).getChildren().get(j);
-                            } else {
-                                InputG pin = (InputG) gCircuit.getComponents().get(i).getChildren().get(j);
-                                if (pin.getDot().contains(event.getX(), event.getY())) {
-                                    pin.getComponent().setData(!pin.getComponent().getData());
-                                }
-                            }
-                        }*/
                     }
                 }
             }
-            System.out.println(currentSelectedInput);
             repaint(gc);
             event.consume();
         });
@@ -268,8 +267,8 @@ public class LgsGui extends Application {
         for (CircuitComponentG element : gCircuit.getComponents()) {
             element.drawShape(gc);
         }
-        for (CircuitComponent element : gCircuit.getCircuit().getComponents()) {
-            
+        for (WireG element : gCircuit.getWires()) {
+            element.drawShape(gc);
         }
     }
 

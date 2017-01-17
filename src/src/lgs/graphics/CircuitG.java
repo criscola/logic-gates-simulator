@@ -15,11 +15,13 @@ import lgs.model.Circuit;
 public class CircuitG {
 
     private LinkedList<CircuitComponentG> components;
+    private LinkedList<WireG> wires;
     private final Circuit circuit;
 
     public CircuitG() {
         circuit = new Circuit();
         components = new LinkedList<>();
+        wires = new LinkedList<>();
     }
 
     public Circuit getCircuit() {
@@ -30,8 +32,13 @@ public class CircuitG {
         return components;
     }
 
+    public LinkedList<WireG> getWires() {
+        return wires;
+    }
+    
     public void addComponent(CircuitComponentG component) {
         circuit.addCircuitComponent(component.getComponent());
         components.add(component);
     }
+    
 }

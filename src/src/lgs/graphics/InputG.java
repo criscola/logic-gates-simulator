@@ -44,14 +44,14 @@ public class InputG extends PinG {
 
     public InputG(Input component, int x, int y) {
         super(new Point(x, y), new Dimension(20, 1));
-        super.isNot = false;
+        super.not = false;
         super.dot = new Rectangle(x - 10 - PinG.WIDTH, y - 10, 20, 20);
         this.component = component;
     }
     
     public InputG(Input component, int x, int y, boolean isNot) {
         super(new Point(x, y), new Dimension(20, 1));
-        super.isNot = isNot;
+        super.not = isNot;
         super.dot = new Rectangle(x - 10 - PinG.WIDTH, y - 10, 20, 20);
         this.component = component;
     }
