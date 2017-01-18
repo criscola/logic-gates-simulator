@@ -69,7 +69,9 @@ public class OutputG extends PinG {
         } else {
             gc.setFill(Color.BLACK);
         }
-
+        if (super.selected) {
+            gc.fillOval(super.dot.x - 5, super.dot.y - 5, super.dot.width + 10, super.dot.height + 10);
+        }
         gc.fillOval(super.dot.x, dot.y, dot.width, dot.height);
     }
 }

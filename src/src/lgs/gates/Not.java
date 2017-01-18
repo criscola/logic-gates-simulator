@@ -6,6 +6,7 @@
 package lgs.gates;
 
 import java.util.LinkedList;
+import static lgs.gates.And.DEFAULT_INPUT_COUNT;
 import lgs.model.CircuitComponent;
 import lgs.model.Input;
 import lgs.model.Output;
@@ -14,14 +15,16 @@ import lgs.model.Output;
  *
  * @author Dias
  */
-public class Not extends CircuitComponent{
+public class Not extends CircuitComponent {
+    
+    public static final int DEFAULT_INPUT_COUNT = 1;
+    
     public Not() {
         super(new LinkedList<>(), new Output());
-        /*
-        getInputs().add(new Input(this));
-        getInputs().add(new Input(this));
-        getOutputs().add(new Output(this));
-        */
+        super.getOutput().setAttachedTo(this);
+        for (int i = 0; i < DEFAULT_INPUT_COUNT; i++) {
+            super.getInputs().add(new Input(this));
+        }
     }
     
     @Override

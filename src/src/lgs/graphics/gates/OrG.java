@@ -14,7 +14,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import lgs.gates.And;
+import lgs.gates.Or;
 import lgs.graphics.Graphics;
 import lgs.graphics.InputG;
 import lgs.graphics.OutputG;
@@ -23,10 +23,10 @@ import lgs.graphics.OutputG;
  *
  * @author Cristiano Colangelo
  */
-public class AndG extends CircuitComponentG {
+public class OrG extends CircuitComponentG {
 
-    public AndG(int x, int y) {
-        super(new And());
+    public OrG(int x, int y) {
+        super(new Or());
 
         super.setOrigin(new Point(x, y));
         super.setSize(new Dimension(80, super.getComponent().getInputs().size() * 50));

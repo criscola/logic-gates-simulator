@@ -25,7 +25,6 @@ package lgs;
 
 import java.util.LinkedHashMap;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -40,7 +39,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
@@ -55,6 +53,12 @@ import lgs.graphics.InputG;
 import lgs.graphics.OutputG;
 import lgs.graphics.PinG;
 import lgs.graphics.WireG;
+import lgs.graphics.gates.NandG;
+import lgs.graphics.gates.NorG;
+import lgs.graphics.gates.NotG;
+import lgs.graphics.gates.OrG;
+import lgs.graphics.gates.XnorG;
+import lgs.graphics.gates.XorG;
 import lgs.utils.Component;
 
 /**
@@ -201,14 +205,12 @@ public class LgsGui extends Application {
         });
 
         canvas.setOnDragDropped((DragEvent event) -> {
-            if (currentDragged == Component.AND) {
-                addToCircuit(Component.AND, event);
-            }
+            addToCircuit(currentDragged, event);
 
             currentDragged = null;
             repaint(canvas.getGraphicsContext2D());
-
             event.setDropCompleted(true);
+
             event.consume();
 
         });
@@ -228,12 +230,8 @@ public class LgsGui extends Application {
                             OutputG outputPin = null;
                             // Se l'utente ha già selezionato un pin in precedenza e non ha selezionato lo stesso
                             // e inoltre se l'utente non ha cliccato su pin già collegati
-                            if (currentSelectedPin != null && !currentSelectedPin.equals(pin) && !currentSelectedPin.isWired() 
+                            if (currentSelectedPin != null && !currentSelectedPin.equals(pin) && !currentSelectedPin.isWired()
                                     && !pin.isWired()) {
-                                if (currentSelectedPin.isWired() || pin.isWired()) {
-                                    currentSelectedPin = pin;
-                                    return;
-                                }
                                 if (currentSelectedPin.getClass().isInstance(new InputG()) && pin.getClass().isInstance(new OutputG())) {
                                     inputPin = (InputG) currentSelectedPin;
                                     outputPin = (OutputG) pin;
@@ -260,6 +258,7 @@ public class LgsGui extends Application {
                                 currentSelectedPin = null;
                             } else {
                                 currentSelectedPin = pin;
+                                currentSelectedPin.setWired(true);
                             }
                             if (inputPin != null && outputPin != null) {
                                 inputPin.getComponent().setData(outputPin.getComponent().getData());
@@ -271,22 +270,19 @@ public class LgsGui extends Application {
                     }
                 }
             }
+
             repaint(gc);
             event.consume();
         });
 
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent key) {
-                if (key.isControlDown()) {
-                    scene.setCursor(Cursor.CROSSHAIR);
-                }
+        scene.setOnKeyPressed((KeyEvent key) -> {
+            if (key.isControlDown()) {
+                scene.setCursor(Cursor.CROSSHAIR);
             }
         });
 
-        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent key) {
-                scene.setCursor(Cursor.DEFAULT);
-            }
+        scene.setOnKeyReleased((KeyEvent key) -> {
+            scene.setCursor(Cursor.DEFAULT);
         });
 
         // Mostra la scena
@@ -300,16 +296,23 @@ public class LgsGui extends Application {
                 gCircuit.addComponent(new AndG((int) event.getX(), (int) event.getY()));
                 break;
             case OR:
+                gCircuit.addComponent(new OrG((int) event.getX(), (int) event.getY()));
+                System.out.println("AAAA");
                 break;
             case NOT:
+                gCircuit.addComponent(new NotG((int) event.getX(), (int) event.getY()));
                 break;
             case XOR:
+                gCircuit.addComponent(new XorG((int) event.getX(), (int) event.getY()));
                 break;
             case NAND:
+                gCircuit.addComponent(new NandG((int) event.getX(), (int) event.getY()));
                 break;
             case NOR:
+                gCircuit.addComponent(new NorG((int) event.getX(), (int) event.getY()));
                 break;
             case XNOR:
+                gCircuit.addComponent(new XnorG((int) event.getX(), (int) event.getY()));
                 break;
         }
     }

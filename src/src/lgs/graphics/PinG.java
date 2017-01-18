@@ -18,17 +18,20 @@ public abstract class PinG extends Graphics {
     public static final int WIDTH = 20;
 
     protected boolean not;
-    protected Rectangle dot; 
+    protected boolean selected;
+    protected Rectangle dot;
     
     private boolean wired;
     
     public PinG() {
         wired = false;
+        selected = false;
     }
     
     public PinG(Point origin, Dimension size) {
         super(origin, size);
         wired = false;
+        selected = false;
     }
 
     public boolean isNot() {
@@ -45,6 +48,14 @@ public abstract class PinG extends Graphics {
     
     public void setWired(boolean wired) {
         this.wired = wired;
+    }
+    
+    public boolean isSelected() {
+        return selected;
+    }
+    
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
     
 }
