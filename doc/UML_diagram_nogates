@@ -13,10 +13,19 @@ abstract class CircuitComponent{
 	+LinkedList<Pin> getOutputs()
 	+void setInputs(LinkedList<Pin> inputs)
 	+void setOutputs(LinkedList<Pin> outputs)
-	+{abstract} boolean getResult(int outputIndex)
-	+{abstract} void setResults()
+	+boolean getResult()
+	+void setResults()
 }
 
+abstract class Graphics{
+	-Point origin;
+	-Point end;
+	+Graphics(Point origin, Point end)
+	+Point getEnd()
+	+Point getOrigin()
+	+void setEnd(Point end)
+	+void setOrigin(Point origin)
+}
 class Circuit{
 	-LinkedList<CircuitComponent> components
 	-LinkedList<Output> inputs
@@ -47,48 +56,12 @@ class Input{
 }
 CircuitComponent ..* Input : attachedTo
 CircuitComponent ..* Output : attachedTo
-package "Logic Gates" #DDDDDD {
-	class And{
-		+And()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-	class Nand{
-		+Nand()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-	class Or{
-		+Or()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-	class Nor{
-		+Nor()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-	class Xor{
-		+Xor()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-	class Xnor{
-		+Xnor()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-	class Not{
-		+Not()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-}
 interface Observer{
 	
 }
+Pin --|> CircuitComponent
+CircuitComponent --|> Graphics
 CircuitComponent --* Circuit
-"Logic Gates" --|> CircuitComponent
 Input ..|> Pin
 Input ..|> Observer
 Output ..|> Pin

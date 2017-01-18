@@ -47,48 +47,10 @@ class Input{
 }
 CircuitComponent ..* Input : attachedTo
 CircuitComponent ..* Output : attachedTo
-package "Logic Gates" #DDDDDD {
-	class And{
-		+And()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-	class Nand{
-		+Nand()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-	class Or{
-		+Or()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-	class Nor{
-		+Nor()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-	class Xor{
-		+Xor()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-	class Xnor{
-		+Xnor()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-	class Not{
-		+Not()
-		+getResult(int outputIndex)
-		+setResults()
-	}
-}
 interface Observer{
 	
 }
 CircuitComponent --* Circuit
-"Logic Gates" --|> CircuitComponent
 Input ..|> Pin
 Input ..|> Observer
 Output ..|> Pin
