@@ -29,7 +29,6 @@ public class Input implements Observer, Pin {
     public void update(Observable o, Object arg) {
         Output output = (Output) arg;
         setData(output.getData());
-        System.out.println((this) + " has changed");
     }
 
     @Override
@@ -37,7 +36,6 @@ public class Input implements Observer, Pin {
         if (data != getData()) {
             this.data = data;
             attachedTo.setResults();
-            System.out.println("Data input set");
         }
 
     }

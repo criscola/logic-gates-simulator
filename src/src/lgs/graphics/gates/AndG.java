@@ -9,14 +9,15 @@ import lgs.graphics.CircuitComponentG;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.LinkedList;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import lgs.gates.And;
 import lgs.graphics.Graphics;
 import lgs.graphics.InputG;
 import lgs.graphics.OutputG;
-import lgs.model.Input;
-import lgs.model.Output;
 
 /**
  *
@@ -50,12 +51,18 @@ public class AndG extends CircuitComponentG {
     }
 
     @Override
-    public void drawShape(GraphicsContext gc) {
+    public void drawShape(GraphicsContext gc) {     
+        // Disegno del rettangolo
+        gc.setFill(Color.WHITE);
+        gc.fillRect(super.getOrigin().x, super.getOrigin().y, super.getSize().width, super.getSize().height);
         gc.setFill(Color.BLACK);
-
-        // Disegno del simbolo europeo
         gc.strokeRect(super.getOrigin().x, super.getOrigin().y, super.getSize().width, super.getSize().height);
-
+        // Disegno del simbolo nel rettangolo
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setTextBaseline(VPos.CENTER);
+        gc.setFont(new Font("Arial", 32));
+        gc.fillText("&", super.getOrigin().x + (super.getSize().width / 2), super.getOrigin().y + (super.getSize().height / 2), 100);
+        
         drawChildren(gc);
     }
 

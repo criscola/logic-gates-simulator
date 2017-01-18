@@ -25,7 +25,9 @@ package lgs;
 
 import java.util.LinkedHashMap;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -38,6 +40,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
@@ -51,7 +55,6 @@ import lgs.graphics.InputG;
 import lgs.graphics.OutputG;
 import lgs.graphics.PinG;
 import lgs.graphics.WireG;
-import lgs.model.CircuitComponent;
 import lgs.utils.Component;
 
 /**
@@ -105,33 +108,36 @@ public class LgsGui extends Application {
      */
     CircuitG gCircuit = new CircuitG();
 
-    PinG currentSelectedPin;
+    PinG currentSelectedPin = null;
+
+    Stage primaryStage;
 
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         // Inizializzazione degli elementi grafici
         // Main container
         mainContainer = new BorderPane();
 
         // Canvas container
         canvasContainer = new ScrollPane();
-        canvasContainer.setStyle("-fx-background-color: lightblue; -fx-border-color: black; -fx-border-width: 1px;");
+        canvasContainer.setStyle("-fx-background-color: lightblue;  -fx-border-color: e6e6e6; -fx-border-width: 2px;");
         canvas = new Canvas(1500, 1000);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         // Toolbox
         toolbox = new FlowPane(Orientation.HORIZONTAL);
         toolbox.setPrefWrapLength(177);
-        toolbox.setStyle("-fx-background-color: e6e6e6; -fx-padding: 2px;");
-
+        toolbox.setVgap(5);
+        toolbox.setStyle("-fx-background-color: white; -fx-padding: 2px;");
         // Left menu
         leftMenu = new Accordion(new TitledPane("Toolbox", toolbox));
-        leftMenu.setStyle("-fx-border-color: black; -fx-border-width: 0px 1px 0px 0px;");
+        //leftMenu.setStyle("-fx-border-color: black; -fx-border-width: 0px 1px 0px 0px;");
         leftMenu.setExpandedPane(leftMenu.getPanes().get(0));
 
         // Inizializzazione scena
         Scene scene = new Scene(mainContainer, 1280, 800);
-        scene.getStylesheets().add(this.getClass().getResource("style/style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("style/stylesheet.css").toExternalForm());
         primaryStage.setTitle("Logic Gates Simulator");
         primaryStage.setScene(scene);
 
@@ -143,9 +149,9 @@ public class LgsGui extends Application {
         Menu menuAbout = new Menu("About");
         menu.getMenus().addAll(menuFile, menuEdit, menuView, menuAbout);
 
+        // Toolbox
         LinkedHashMap<Component, ImageView> toolboxElements = new LinkedHashMap<>();
 
-        // Porte logiche nella toolbox 
         toolboxElements.put(Component.AND, new ImageView(getClass().getResource("gates/images/and.png").toExternalForm()));
         toolboxElements.put(Component.NAND, new ImageView(getClass().getResource("gates/images/nand.png").toExternalForm()));
         toolboxElements.put(Component.OR, new ImageView(getClass().getResource("gates/images/or.png").toExternalForm()));
@@ -154,7 +160,25 @@ public class LgsGui extends Application {
         toolboxElements.put(Component.XNOR, new ImageView(getClass().getResource("gates/images/xnor.png").toExternalForm()));
         toolboxElements.put(Component.NOT, new ImageView(getClass().getResource("gates/images/not.png").toExternalForm()));
 
-        makeDraggable(toolboxElements);
+        toolboxElements.entrySet().stream().forEach((image) -> {
+            image.getValue().setOnDragDetected((MouseEvent event) -> {
+                currentDragged = image.getKey();
+                Dragboard db = image.getValue().startDragAndDrop(TransferMode.ANY);
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(image.getValue().getImage());
+                db.setContent(content);
+
+                event.consume();
+            });
+            image.getValue().setOnMouseEntered((MouseEvent event) -> {
+                primaryStage.getScene().setCursor(Cursor.OPEN_HAND);
+                event.consume();
+            });
+            image.getValue().setOnMouseExited((MouseEvent event) -> {
+                primaryStage.getScene().setCursor(Cursor.DEFAULT);
+                event.consume();
+            });
+        });
 
         // Strutturazione
         mainContainer.setLeft(leftMenu);
@@ -188,9 +212,8 @@ public class LgsGui extends Application {
             event.consume();
 
         });
-        
+
         canvas.setOnMouseClicked((MouseEvent event) -> {
-          
             int componentCount = gCircuit.getComponents().size();
             // TODO: AGGIUNGERE CONTROLLI CASTING OGGETTI!
             for (int i = 0; i < componentCount; i++) {
@@ -201,39 +224,69 @@ public class LgsGui extends Application {
                     if (pin.getDot().contains(event.getX(), event.getY())) {
                         // L'utente premeva anche il tasto control?
                         if (event.isControlDown()) {
+                            InputG inputPin = null;
+                            OutputG outputPin = null;
                             // Se l'utente ha già selezionato un pin in precedenza e non ha selezionato lo stesso
-                            if (currentSelectedPin != null && !currentSelectedPin.equals(pin)) {
-                                InputG inputPin;
-                                OutputG outputPin;
+                            // e inoltre se l'utente non ha cliccato su pin già collegati
+                            if (currentSelectedPin != null && !currentSelectedPin.equals(pin) && !currentSelectedPin.isWired() 
+                                    && !pin.isWired()) {
+                                if (currentSelectedPin.isWired() || pin.isWired()) {
+                                    currentSelectedPin = pin;
+                                    return;
+                                }
                                 if (currentSelectedPin.getClass().isInstance(new InputG()) && pin.getClass().isInstance(new OutputG())) {
                                     inputPin = (InputG) currentSelectedPin;
                                     outputPin = (OutputG) pin;
-                                } else {
+                                } else if (currentSelectedPin.getClass().isInstance(new OutputG()) && pin.getClass().isInstance(new InputG())) {
                                     inputPin = (InputG) pin;
                                     outputPin = (OutputG) currentSelectedPin;
                                 }
                                 // Collega insieme i 2 pin
-                                outputPin.getComponent().addObserver(inputPin.getComponent());
+                                if (inputPin != null && outputPin != null
+                                        && inputPin.getComponent().getAttachedTo() != outputPin.getComponent().getAttachedTo()) {
+                                    outputPin.getComponent().addObserver(inputPin.getComponent());
+                                    int x1 = inputPin.getOrigin().x - PinG.WIDTH;
+                                    int y1 = inputPin.getOrigin().y;
+                                    int x2 = outputPin.getOrigin().x;
+                                    int y2 = outputPin.getOrigin().y;
+                                    // Controlla che l'utente non abbia già creato un collegamento identico in precedenza
+                                    WireG wire = new WireG(x1, y1, x2, y2, inputPin, outputPin);
+                                    if (!gCircuit.getWires().contains(wire)) {
+                                        gCircuit.getWires().add(wire);
+                                        inputPin.setWired(true);
+                                        outputPin.setWired(true);
+                                    }
+                                }
                                 currentSelectedPin = null;
-                                int x1 = inputPin.getOrigin().x - PinG.WIDTH;
-                                int y1 = inputPin.getOrigin().y;
-                                int x2 = outputPin.getOrigin().x;
-                                int y2 = outputPin.getOrigin().y;
-                                gCircuit.getWires().add(new WireG(x1, y1, x2, y2, inputPin, outputPin));
                             } else {
                                 currentSelectedPin = pin;
                             }
-                        } else {
-                            if (!pin.isWired() && pin.getClass().isInstance(new InputG())) {
-                                InputG inputPin = (InputG) pin;
-                                inputPin.getComponent().setData(!inputPin.getComponent().getData());
+                            if (inputPin != null && outputPin != null) {
+                                inputPin.getComponent().setData(outputPin.getComponent().getData());
                             }
+                        } else if (!pin.isWired() && pin.getClass().isInstance(new InputG())) {
+                            InputG inputPin = (InputG) pin;
+                            inputPin.getComponent().setData(!inputPin.getComponent().getData());
                         }
                     }
                 }
             }
             repaint(gc);
             event.consume();
+        });
+
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent key) {
+                if (key.isControlDown()) {
+                    scene.setCursor(Cursor.CROSSHAIR);
+                }
+            }
+        });
+
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent key) {
+                scene.setCursor(Cursor.DEFAULT);
+            }
         });
 
         // Mostra la scena
@@ -244,7 +297,6 @@ public class LgsGui extends Application {
     private void addToCircuit(Component componentType, DragEvent event) {
         switch (componentType) {
             case AND:
-                System.out.println(event.getX() + " " + event.getY());
                 gCircuit.addComponent(new AndG((int) event.getX(), (int) event.getY()));
                 break;
             case OR:
@@ -270,20 +322,6 @@ public class LgsGui extends Application {
         for (WireG element : gCircuit.getWires()) {
             element.drawShape(gc);
         }
-    }
-
-    private void makeDraggable(LinkedHashMap<Component, ImageView> images) {
-        images.entrySet().stream().forEach((image) -> {
-            image.getValue().setOnDragDetected((MouseEvent event) -> {
-                currentDragged = image.getKey();
-                Dragboard db = image.getValue().startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.putImage(image.getValue().getImage());
-                db.setContent(content);
-
-                event.consume();
-            });
-        });
     }
 
     /**

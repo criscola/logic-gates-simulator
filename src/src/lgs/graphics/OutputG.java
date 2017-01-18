@@ -64,7 +64,7 @@ public class OutputG extends PinG {
     public void drawShape(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.strokeLine(super.getOrigin().x, super.getOrigin().y, super.getOrigin().x - super.getSize().width, super.getOrigin().y);
-        if (getComponent().getAttachedTo().getResult() == true) {
+        if (getComponent().getData() == true) {
             gc.setFill(Color.RED);
         } else {
             gc.setFill(Color.BLACK);

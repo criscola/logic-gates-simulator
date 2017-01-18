@@ -45,7 +45,6 @@ public class WireG {
             gc.setStroke(Color.BLACK);
         }
         gc.strokeLine(p1.x, p1.y, p2.x, p2.y);
-        System.out.println(output.getComponent().getData());
         gc.setStroke(Color.BLACK);
     }
 }

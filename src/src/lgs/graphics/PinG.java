@@ -23,11 +23,12 @@ public abstract class PinG extends Graphics {
     private boolean wired;
     
     public PinG() {
-        
+        wired = false;
     }
     
     public PinG(Point origin, Dimension size) {
         super(origin, size);
+        wired = false;
     }
 
     public boolean isNot() {

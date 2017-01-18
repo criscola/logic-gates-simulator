@@ -25,7 +25,6 @@ public class Output extends Observable implements Pin {
     public void changedPinInput() {
         setChanged();
         notifyObservers(this);
-        System.out.println("output changed");
     }
     
     @Override

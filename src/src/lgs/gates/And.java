@@ -33,7 +33,6 @@ public class And extends CircuitComponent {
 
     @Override
     public void setResults() {
-        //System.out.println("metodo sR chiamato");
         output.setData(getResult());
     }
 
