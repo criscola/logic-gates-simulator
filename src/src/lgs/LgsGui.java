@@ -25,6 +25,7 @@ package lgs;
 
 import java.util.LinkedHashMap;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -40,6 +41,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
@@ -225,6 +227,9 @@ public class LgsGui extends Application {
                     if (pin.getDot().contains(event.getX(), event.getY())) {
                         // L'utente premeva anche il tasto control?
                         if (event.isControlDown()) {
+                            if (event.getClickCount() == 2) {
+                                System.out.println("Double clicked");
+                            }
                             InputG inputPin = null;
                             OutputG outputPin = null;
                             // Se l'utente ha già selezionato un pin in precedenza e non ha selezionato lo stesso
