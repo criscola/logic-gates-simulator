@@ -23,6 +23,7 @@ public class Nand extends CircuitComponent{
         for (int i = 0; i < DEFAULT_INPUT_COUNT; i++) {
             super.getInputs().add(new Input(this));
         }
+        setResults();
     }
     public boolean getResult(){
         return !(getInputs().get(0).getData() && getInputs().get(0).getData());

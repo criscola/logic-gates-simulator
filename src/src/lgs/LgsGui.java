@@ -217,7 +217,6 @@ public class LgsGui extends Application {
 
         canvas.setOnMouseClicked((MouseEvent event) -> {
             int componentCount = gCircuit.getComponents().size();
-            // TODO: AGGIUNGERE CONTROLLI CASTING OGGETTI!
             for (int i = 0; i < componentCount; i++) {
                 int childrenCount = gCircuit.getComponents().get(i).getChildren().size();
                 for (int j = 0; j < childrenCount; j++) {
@@ -232,6 +231,7 @@ public class LgsGui extends Application {
                             // e inoltre se l'utente non ha cliccato su pin già collegati
                             if (currentSelectedPin != null && !currentSelectedPin.equals(pin) && !currentSelectedPin.isWired()
                                     && !pin.isWired()) {
+                                System.out.println("1");
                                 if (currentSelectedPin.getClass().isInstance(new InputG()) && pin.getClass().isInstance(new OutputG())) {
                                     inputPin = (InputG) currentSelectedPin;
                                     outputPin = (OutputG) pin;
@@ -258,7 +258,6 @@ public class LgsGui extends Application {
                                 currentSelectedPin = null;
                             } else {
                                 currentSelectedPin = pin;
-                                currentSelectedPin.setWired(true);
                             }
                             if (inputPin != null && outputPin != null) {
                                 inputPin.getComponent().setData(outputPin.getComponent().getData());
@@ -297,7 +296,6 @@ public class LgsGui extends Application {
                 break;
             case OR:
                 gCircuit.addComponent(new OrG((int) event.getX(), (int) event.getY()));
-                System.out.println("AAAA");
                 break;
             case NOT:
                 gCircuit.addComponent(new NotG((int) event.getX(), (int) event.getY()));

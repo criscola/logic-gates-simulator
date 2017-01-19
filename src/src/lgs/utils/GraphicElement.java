@@ -21,48 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package lgs.graphics;
+package lgs.utils;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import lgs.model.Input;
-import static lgs.utils.GraphicElement.DOT_SIZE;
 
 /**
  *
  * @author A4XX-COLCRI
  */
-public class InputG extends PinG {
+public final class GraphicElement {
 
-    private Input component;
-
-    public InputG() {
-
-    }
-
-    public InputG(Input component, int x, int y) {
-        super(new Point(x, y), new Dimension(WIDTH, 1));
-        super.dot = new Rectangle(x - DOT_SIZE / 2 - WIDTH, y - DOT_SIZE / 2, DOT_SIZE, DOT_SIZE);
-        this.component = component;
-    }
-
-    public Input getComponent() {
-        return component;
-    }
+    /**
+     * The size in pixels of the not dot on logic gates
+     */
+    public static int NOTDOT_SIZE = 10;
+    /**
+     * The size in pixels of the clickable dot on logic gates
+     */
+    public static int DOT_SIZE = 20; 
     
-    @Override
-    public void drawShape(GraphicsContext gc) {
+    /**
+     * Draws the not dot on a logic gate
+     * @param origin
+     * @param size
+     * @param gc 
+     */
+    public static void drawNotDot(Point origin, Dimension size, GraphicsContext gc) {
+        gc.setFill(Color.WHITE);
+        int tx = origin.x + size.width;
+        int ty = origin.y + size.height / 2 - NOTDOT_SIZE / 2;
+        gc.fillOval(tx, ty, NOTDOT_SIZE, NOTDOT_SIZE);
         gc.setFill(Color.BLACK);
-        gc.strokeLine(super.getOrigin().x, super.getOrigin().y, super.getOrigin().x - WIDTH, super.getOrigin().y);
-        if (getComponent().getData() == true) {
-            gc.setFill(Color.RED);
-        } else {
-            gc.setFill(Color.BLACK);
-        }
-
-        gc.fillOval(super.dot.x, dot.y, dot.width, dot.height);
+        gc.strokeOval(tx, ty, NOTDOT_SIZE, NOTDOT_SIZE);
     }
+
 }

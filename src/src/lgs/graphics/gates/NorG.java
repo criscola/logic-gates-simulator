@@ -18,6 +18,7 @@ import lgs.gates.Nor;
 import lgs.graphics.Graphics;
 import lgs.graphics.InputG;
 import lgs.graphics.OutputG;
+import lgs.utils.GraphicElement;
 
 /**
  *
@@ -50,7 +51,7 @@ public class NorG extends CircuitComponentG {
     }
 
     @Override
-    public void drawShape(GraphicsContext gc) {     
+    public void drawShape(GraphicsContext gc) {
         // Disegno del rettangolo
         gc.setFill(Color.WHITE);
         gc.fillRect(super.getOrigin().x, super.getOrigin().y, super.getSize().width, super.getSize().height);
@@ -60,9 +61,12 @@ public class NorG extends CircuitComponentG {
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
         gc.setFont(new Font("Arial", 32));
-        gc.fillText("&", super.getOrigin().x + (super.getSize().width / 2), super.getOrigin().y + (super.getSize().height / 2), 100);
-        
+        gc.fillText("≥1", super.getOrigin().x + (super.getSize().width / 2), super.getOrigin().y + (super.getSize().height / 2), 100);
+
         drawChildren(gc);
+
+        // Disegna il puntino del negato sull'output
+        GraphicElement.drawNotDot(super.getOrigin(), super.getSize(), gc);
     }
 
 }

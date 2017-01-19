@@ -15,9 +15,8 @@ import java.awt.Rectangle;
  */
 public abstract class PinG extends Graphics {
 
-    public static final int WIDTH = 20;
+    public static final int WIDTH = 30;
 
-    protected boolean not;
     protected boolean selected;
     protected Rectangle dot;
     
@@ -32,10 +31,6 @@ public abstract class PinG extends Graphics {
         super(origin, size);
         wired = false;
         selected = false;
-    }
-
-    public boolean isNot() {
-        return not;
     }
     
     public Rectangle getDot() {

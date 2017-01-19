@@ -29,6 +29,7 @@ import java.awt.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import lgs.model.Output;
+import static lgs.utils.GraphicElement.DOT_SIZE;
 
 /**
  *
@@ -44,15 +45,7 @@ public class OutputG extends PinG {
 
     public OutputG(Output component, int x, int y) {
         super(new Point(x + PinG.WIDTH, y), new Dimension(20, 1));
-        super.not = false;
-        super.dot = new Rectangle(x - 10 + PinG.WIDTH , y - 10, 20, 20);
-        this.component = component;
-    }
-
-    public OutputG(Output component, int x, int y, boolean isNot) {
-        super(new Point(x, y), new Dimension(20, 1));
-        super.not = isNot;
-        super.dot = new Rectangle(x - 10 - PinG.WIDTH, y - 10, 20, 20);
+        super.dot = new Rectangle(x - DOT_SIZE / 2 + WIDTH , y - DOT_SIZE / 2, DOT_SIZE, DOT_SIZE);
         this.component = component;
     }
 
@@ -63,15 +56,16 @@ public class OutputG extends PinG {
     @Override
     public void drawShape(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
-        gc.strokeLine(super.getOrigin().x, super.getOrigin().y, super.getOrigin().x - super.getSize().width, super.getOrigin().y);
+        gc.strokeLine(super.getOrigin().x, super.getOrigin().y, super.getOrigin().x - WIDTH, super.getOrigin().y);
         if (getComponent().getData() == true) {
             gc.setFill(Color.RED);
         } else {
             gc.setFill(Color.BLACK);
         }
+        /** EVIDENZIA IL SELEZIONATO CON CTRL, DA SISTEMARE
         if (super.selected) {
             gc.fillOval(super.dot.x - 5, super.dot.y - 5, super.dot.width + 10, super.dot.height + 10);
-        }
+        } */
         gc.fillOval(super.dot.x, dot.y, dot.width, dot.height);
     }
 }

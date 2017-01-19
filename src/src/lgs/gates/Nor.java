@@ -22,6 +22,7 @@ public class Nor extends CircuitComponent{
         for (int i = 0; i < DEFAULT_INPUT_COUNT; i++) {
             super.getInputs().add(new Input(this));
         }
+        setResults();
     }
     
     

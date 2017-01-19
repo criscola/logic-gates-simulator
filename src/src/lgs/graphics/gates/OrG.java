@@ -60,7 +60,7 @@ public class OrG extends CircuitComponentG {
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
         gc.setFont(new Font("Arial", 32));
-        gc.fillText("&", super.getOrigin().x + (super.getSize().width / 2), super.getOrigin().y + (super.getSize().height / 2), 100);
+        gc.fillText("≥1", super.getOrigin().x + (super.getSize().width / 2), super.getOrigin().y + (super.getSize().height / 2), 100);
         
         drawChildren(gc);
     }

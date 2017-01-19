@@ -18,6 +18,7 @@ import lgs.gates.Nand;
 import lgs.graphics.Graphics;
 import lgs.graphics.InputG;
 import lgs.graphics.OutputG;
+import lgs.utils.GraphicElement;
 
 /**
  *
@@ -50,7 +51,7 @@ public class NandG extends CircuitComponentG {
     }
 
     @Override
-    public void drawShape(GraphicsContext gc) {     
+    public void drawShape(GraphicsContext gc) {
         // Disegno del rettangolo
         gc.setFill(Color.WHITE);
         gc.fillRect(super.getOrigin().x, super.getOrigin().y, super.getSize().width, super.getSize().height);
@@ -61,8 +62,11 @@ public class NandG extends CircuitComponentG {
         gc.setTextBaseline(VPos.CENTER);
         gc.setFont(new Font("Arial", 32));
         gc.fillText("&", super.getOrigin().x + (super.getSize().width / 2), super.getOrigin().y + (super.getSize().height / 2), 100);
-        
+
         drawChildren(gc);
+        
+        // Disegna il puntino del negato sull'output
+        GraphicElement.drawNotDot(super.getOrigin(), super.getSize(), gc);
     }
 
 }
