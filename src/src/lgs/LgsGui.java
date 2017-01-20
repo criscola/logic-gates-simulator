@@ -30,11 +30,13 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -185,7 +187,7 @@ public class LgsGui extends Application {
         });
 
         menuFile.getItems().addAll(menuItemReset, menuItemClose);
-        Menu menuAbout = new Menu("About");
+        Menu menuHelp = new Menu("Help");
         MenuItem menuItemGetHelp = new MenuItem("Get help!", new ImageView(getClass().getResource("utils/help.png").toExternalForm()));
         menuItemGetHelp.setOnAction((ActionEvent t) -> {
             final Stage dialog = new Stage();
@@ -213,12 +215,17 @@ public class LgsGui extends Application {
                     + "input or output to disconnect."));
             dialogVbox.getChildren().add(new Text("-- Select a component: Double-click on the desired component."));
             dialogVbox.getChildren().add(new Text("-- Reset circuit: Go under File > Reset circuit"));
+            Button close = new Button("Close");
+            dialogVbox.getChildren().add(close);
+            close.setOnMouseClicked(MouseEvent -> {
+                dialog.close();
+            });
             Scene dialogScene = new Scene(dialogVbox, 300, 200);
             dialog.setScene(dialogScene);
             dialog.show();
         });
-        menuAbout.getItems().add(menuItemGetHelp);
-        menu.getMenus().addAll(menuFile, menuAbout);
+        menuHelp.getItems().add(menuItemGetHelp);
+        menu.getMenus().addAll(menuFile, menuHelp);
 
         // Toolbox
         LinkedHashMap<Component, ImageView> toolboxElements = new LinkedHashMap<>();
@@ -294,8 +301,12 @@ public class LgsGui extends Application {
                         currentSelector = new Selector(gate.getOrigin().x - PinG.WIDTH - DOT_SIZE,
                                 gate.getOrigin().y - SELECTOR_PADDING, gate.getSize().width + 2 * (PinG.WIDTH + DOT_SIZE),
                                 gate.getSize().height + 2 * SELECTOR_PADDING, gate);
+                        System.out.println("settato a " + currentSelector.toString());
+                        break;
                     } else {
                         currentSelector = null;
+                        System.out.println("settato a null");
+                        continue;
                     }
                 }
 
