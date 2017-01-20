@@ -26,6 +26,9 @@ package lgs;
 import java.awt.Rectangle;
 import java.util.LinkedHashMap;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -34,6 +37,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
@@ -46,6 +50,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lgs.graphics.CircuitComponentG;
 import lgs.model.Circuit;
@@ -161,10 +169,56 @@ public class LgsGui extends Application {
         // Menu
         menu = new MenuBar();
         Menu menuFile = new Menu("File");
-        Menu menuEdit = new Menu("Edit");
-        Menu menuView = new Menu("View");
+        MenuItem menuItemReset = new MenuItem("Reset circuit", new ImageView(getClass().getResource("utils/reset.png").toExternalForm()));
+        MenuItem menuItemClose = new MenuItem("Close application", new ImageView(getClass().getResource("utils/close.png").toExternalForm()));
+        menuItemReset.setOnAction((ActionEvent t) -> {
+            gCircuit.getCircuit().getComponents().clear();
+            gCircuit.getComponents().clear();
+            gCircuit.getWires().clear();
+            currentSelector = null;
+            currentSelectedPin = null;
+            repaint(gc);
+        });
+        menuItemClose.setOnAction((ActionEvent t) -> {
+            Platform.exit();
+            System.exit(0);
+        });
+
+        menuFile.getItems().addAll(menuItemReset, menuItemClose);
         Menu menuAbout = new Menu("About");
-        menu.getMenus().addAll(menuFile, menuEdit, menuView, menuAbout);
+        MenuItem menuItemGetHelp = new MenuItem("Get help!", new ImageView(getClass().getResource("utils/help.png").toExternalForm()));
+        menuItemGetHelp.setOnAction((ActionEvent t) -> {
+            final Stage dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.initOwner(primaryStage);
+            dialog.setMinWidth(300);
+            dialog.setMinHeight(150);
+            VBox dialogVbox = new VBox(50);
+            dialog.setWidth(800);
+            dialog.setHeight(250);
+            dialogVbox.setPadding(new Insets(5, 20, 20, 10));
+            dialogVbox.setSpacing(1);
+            Text temp = new Text("Controls");
+            temp.setFont(new Font(22));
+            dialogVbox.getChildren().add(temp);
+            Text temp2 = new Text("------------------------------------------------------------------------");
+            temp2.setFont(new Font(22));
+            dialogVbox.getChildren().add(temp2);
+            dialogVbox.getChildren().add(new Text("-- Add a component to circuit: Drag & drop from the toolbox in the left area to "
+                    + "the draw area in the right area."));
+            dialogVbox.getChildren().add(new Text("-- Change input value: Single-click on the desired input to switch its data."));
+            dialogVbox.getChildren().add(new Text("-- Wire components together: Keep pressed CTRL key on your keyboard while single-click the desired input and "
+                    + "output to wire."));
+            dialogVbox.getChildren().add(new Text("-- Delete wiring between components: Keep pressed CTRL key on your keyboard while single-click the desired "
+                    + "input or output to disconnect."));
+            dialogVbox.getChildren().add(new Text("-- Select a component: Double-click on the desired component."));
+            dialogVbox.getChildren().add(new Text("-- Reset circuit: Go under File > Reset circuit"));
+            Scene dialogScene = new Scene(dialogVbox, 300, 200);
+            dialog.setScene(dialogScene);
+            dialog.show();
+        });
+        menuAbout.getItems().add(menuItemGetHelp);
+        menu.getMenus().addAll(menuFile, menuAbout);
 
         // Toolbox
         LinkedHashMap<Component, ImageView> toolboxElements = new LinkedHashMap<>();
@@ -238,8 +292,8 @@ public class LgsGui extends Application {
                 if (event.getClickCount() == 2) {
                     if (gateArea.contains(event.getX(), event.getY())) {
                         currentSelector = new Selector(gate.getOrigin().x - PinG.WIDTH - DOT_SIZE,
-                            gate.getOrigin().y - SELECTOR_PADDING, gate.getSize().width + 2 * (PinG.WIDTH + DOT_SIZE),
-                            gate.getSize().height + 2 * SELECTOR_PADDING, gate);
+                                gate.getOrigin().y - SELECTOR_PADDING, gate.getSize().width + 2 * (PinG.WIDTH + DOT_SIZE),
+                                gate.getSize().height + 2 * SELECTOR_PADDING, gate);
                     } else {
                         currentSelector = null;
                     }
@@ -264,7 +318,7 @@ public class LgsGui extends Application {
                                             inputComponent = inputPin.getComponent();
                                             outputComponent = inputComponent.getOutputComponent();
                                             gCircuit.getCircuit().deattachInput(outputComponent, inputComponent);
-                                            
+
                                         } else if (pin.getClass().isInstance(new OutputG())) {
                                             outputPin = (OutputG) pin;
                                             outputComponent = outputPin.getComponent();
@@ -280,7 +334,7 @@ public class LgsGui extends Application {
                                     }
                                 }
                             }
-                            
+
                             // Se l'utente ha già selezionato un pin in precedenza e non ha selezionato lo stesso
                             // e inoltre se l'utente non ha cliccato su pin già collegati
                             if (currentSelectedPin != null && !currentSelectedPin.equals(pin) && !currentSelectedPin.isWired()
@@ -390,7 +444,7 @@ public class LgsGui extends Application {
                 gc.drawImage(minus,
                         currentSelector.getOrigin().x + currentSelector.getSize().width + 10,
                         currentSelector.getOrigin().y + 48);
-            }   
+            }
         }
     }
 
