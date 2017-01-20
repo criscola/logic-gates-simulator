@@ -45,8 +45,8 @@ class Input{
 	+CircuitComponent getAttachedTo()
 	+void setAttachedTo(CircuitComponent attachedTo)
 }
-CircuitComponent ..* Input : attachedTo
-CircuitComponent ..* Output : attachedTo
+CircuitComponent --* Input : attachedTo
+CircuitComponent --* Output : attachedTo
 interface Observer{
 	
 }
