@@ -24,6 +24,7 @@ public class XnorTest {
     public void testGetResult() {
         System.out.println("getResult");
         Xnor g = new Xnor();
+        assertEquals(false, g.getResult(-1));
         testCombinations(g);  
         setFirstCombination(g);
         assertEquals(true, g.getResult(0));
@@ -64,5 +65,6 @@ public class XnorTest {
         assertEquals(true, g.getResult(0));
         setFourthCombination(g);
         assertEquals(false, g.getResult(0));
+        assertEquals(false, g.getResult(-1));
     }
 }

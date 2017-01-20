@@ -24,6 +24,7 @@ public class NandTest {
     public void testGetResult() {
         System.out.println("getResult");
         Nand g = new Nand();
+        assertEquals(false, g.getResult(-1));
         testCombinations(g);  
         setFirstCombination(g);
         assertEquals(true, g.getResult(0));
@@ -47,6 +48,7 @@ public class NandTest {
         assertEquals(false, g.getResult(0));
         setFourthCombination(g);
         assertEquals(true, g.getResult(0));
+        assertEquals(false, g.getResult(-1));
     }
     public void setFirstCombination(Nand g){
         g.getInputs().get(0).setData(false);

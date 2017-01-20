@@ -7,7 +7,7 @@ package lgs.model;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-
+import lgs.gates.And;
 /**
  *
  * @author Dias
@@ -23,12 +23,10 @@ public class OutputTest {
     @Test
     public void testGetData() {
         System.out.println("getData");
-        Output instance = null;
-        boolean expResult = false;
-        boolean result = instance.getData();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Output instance = new Output(null);
+        assertEquals(false, instance.getData());
+        instance.setData(true);
+        assertEquals(true, instance.getData());
     }
 
     /**
@@ -37,11 +35,12 @@ public class OutputTest {
     @Test
     public void testSetData() {
         System.out.println("setData");
-        boolean data = false;
-        Output instance = null;
-        instance.setData(data);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Output instance = new Output(null);
+        assertEquals(false, instance.getData());
+        instance.setData(true);
+        assertEquals(true, instance.getData());
+        instance.setData(false);
+        assertEquals(false, instance.getData());
     }
 
     /**
@@ -50,10 +49,14 @@ public class OutputTest {
     @Test
     public void testChangedPinInput() {
         System.out.println("changedPinInput");
-        Output instance = null;
-        instance.changedPinInput();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Output instance = new Output(null);
+        Input o = new Input(null);
+        instance.addObserver(o);
+        assertEquals(instance.getData(), o.getData());
+        instance.setData(true);
+        assertEquals(o.getData(), o.getData());
+        instance.setData(false);
+        assertEquals(instance.getData(), o.getData());
     }
 
     /**
@@ -62,12 +65,13 @@ public class OutputTest {
     @Test
     public void testGetAttachedTo() {
         System.out.println("getAttachedTo");
-        Output instance = null;
-        CircuitComponent expResult = null;
+        Output instance = new Output(null);
+        CircuitComponent expResult = new And();
         CircuitComponent result = instance.getAttachedTo();
+        assertEquals(null, result);
+        instance.setAttachedTo(expResult);
+        result = instance.getAttachedTo();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -76,11 +80,13 @@ public class OutputTest {
     @Test
     public void testSetAttachedTo() {
         System.out.println("setAttachedTo");
-        CircuitComponent attachedTo = null;
-        Output instance = null;
-        instance.setAttachedTo(attachedTo);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Output instance = new Output(null);
+        CircuitComponent expResult = new And();
+        CircuitComponent result = instance.getAttachedTo();
+        assertEquals(null, result);
+        instance.setAttachedTo(expResult);
+        result = instance.getAttachedTo();
+        assertEquals(expResult, result);
     }
     
 }

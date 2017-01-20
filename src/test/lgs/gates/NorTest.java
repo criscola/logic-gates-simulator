@@ -24,6 +24,7 @@ public class NorTest {
     public void testGetResult() {
         System.out.println("getResult");
         Nor g = new Nor();
+        assertEquals(false, g.getResult(-1));
         testCombinations(g);  
         setFirstCombination(g);
         assertEquals(true, g.getResult(0));
@@ -47,6 +48,7 @@ public class NorTest {
         assertEquals(false, g.getResult(0));
         setFourthCombination(g);
         assertEquals(false, g.getResult(0));
+        assertEquals(false, g.getResult(-1));
     }
     public void setFirstCombination(Nor g){
         g.getInputs().get(0).setData(false);

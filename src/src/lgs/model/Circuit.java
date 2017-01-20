@@ -41,10 +41,11 @@ public class Circuit {
     }
     
     public void addCircuitComponent(CircuitComponent component){
-        getComponents().add(component);
+        getComponents().add(component); 
     }
     public void addInput(Pin input){
         this.inputs.add((Output)input);
+        
     }
     /**
      * Method to attach an output to an input, when the former changes, the latter changes too. It can be seen as a broadcast

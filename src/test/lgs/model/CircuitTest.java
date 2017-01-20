@@ -27,8 +27,10 @@ public class CircuitTest {
         LinkedList<Output> inputs = null;
         Circuit instance = new Circuit();
         instance.setInputs(inputs);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(null, instance.getInputs());
+        inputs = new LinkedList<>();
+        instance.setInputs(inputs);
+        assertEquals(inputs, instance.getInputs());
     }
 
     /**
@@ -51,12 +53,13 @@ public class CircuitTest {
     @Test
     public void testGetInputs() {
         System.out.println("getInputs");
+        LinkedList<Output> inputs = null;
         Circuit instance = new Circuit();
-        LinkedList<Output> expResult = null;
-        LinkedList<Output> result = instance.getInputs();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setInputs(inputs);
+        assertEquals(null, instance.getInputs());
+        inputs = new LinkedList<>();
+        instance.setInputs(inputs);
+        assertEquals(inputs, instance.getInputs());
     }
 
     /**
@@ -94,8 +97,10 @@ public class CircuitTest {
         Pin input = null;
         Circuit instance = new Circuit();
         instance.addInput(input);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(null, instance.getInputs().get(0));
+        Input input2 = new Input(null);
+        instance.addInput(input2);
+        assertEquals(input2, instance.getInputs().get(1));
     }
 
     /**
@@ -104,12 +109,12 @@ public class CircuitTest {
     @Test
     public void testAttachInput() {
         System.out.println("attachInput");
-        Pin output = null;
-        Pin input = null;
+        Pin output = new Output(null);
+        Pin input = new Input(null);
         Circuit instance = new Circuit();
         instance.attachInput(output, input);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        output.setData(true);
+        assertEquals(output.getData(), input.getData());
     }
 
     /**
@@ -118,12 +123,15 @@ public class CircuitTest {
     @Test
     public void testDeattachInput() {
         System.out.println("deattachInput");
-        Pin output = null;
-        Pin input = null;
+        Pin output = new Output(null);
+        Pin input = new Input(null);
         Circuit instance = new Circuit();
+        instance.attachInput(output, input);
+        output.setData(true);
+        assertEquals(output.getData(), input.getData());
         instance.deattachInput(output, input);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        output.setData(false);
+        assertEquals(!output.getData(), input.getData());
     }
     
 }

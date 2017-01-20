@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>NewMain.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;logic-gates-simulator&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">lgs.model</a> &gt; <span class="el_source">NewMain.java</span></div><h1>NewMain.java</h1><pre class="source lang-java linenums">package lgs.model;
+
+
+import java.util.LinkedList;
+import lgs.gates.*;
+import lgs.model.CircuitComponent;
+import lgs.model.Pin;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Dias
+ */
+<span class="nc" id="L19">public class NewMain {</span>
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+
+<span class="nc" id="L26">        Output output1 = new Output(null);</span>
+<span class="nc" id="L27">        Output output2 = new Output(null);</span>
+        
+        /*CircuitComponent and1 = new And();
+        CircuitComponent and2 = new And();
+        CircuitComponent xor1 = new Xor();
+        output1.addObserver((Input)and1.getInputs().get(0));
+        output1.addObserver((Input)and1.getInputs().get(1));
+        output2.addObserver((Input)and2.getInputs().get(0));
+        output2.addObserver((Input)and2.getInputs().get(1));
+        ((Output)and1.getOutputs().get(0)).addObserver((Input)(xor1.getInputs()).get(0));
+        ((Output)and2.getOutputs().get(0)).addObserver((Input)xor1.getInputs().get(1));
+        output1.setData(true);
+        output2.setData(false);
+        System.out.println(xor1.getOutputs().get(0).getData());
+        */
+        /*
+        Output r = new Output(null);
+        Output s = new Output(null);
+        CircuitComponent a = new Nor();
+        CircuitComponent b = new Nor();
+        r.addObserver((Input)a.getInputs().get(0));
+        s.addObserver((Input)b.getInputs().get(1));
+        ((Output)b.getOutputs().get(0)).addObserver((Input)a.getInputs().get(0));
+        ((Output)a.getOutputs().get(0)).addObserver((Input)b.getInputs().get(0));
+        r.setData(true);
+        s.setData(false);
+        System.out.println(a.getOutputs().get(0).getData());
+        System.out.println(b.getOutputs().get(0).getData());*/
+        
+        /*Output a = new Output(null);
+        Output b = new Output(null);
+        Output[] outputs = {new Output(null), new Output(null), new Output(null), new Output(null)};
+        outputs[0].setData(true);
+        outputs[1].setData(true);
+        CircuitComponent nor1 = new And();
+        CircuitComponent nor2 = new Nor();
+        CircuitComponent xnor1 = new Or();
+        Circuit circuit = new Circuit();
+        for(int i = 0; i &lt; outputs.length; i++)
+            circuit.addInput(outputs[i]);
+        circuit.addCircuitComponent(nor1);
+        circuit.addCircuitComponent(nor2);
+        circuit.addCircuitComponent(xnor1);
+        circuit.attachInput(outputs[0], (Input)nor1.getInputs().get(0));
+        circuit.attachInput(outputs[1], (Input)nor1.getInputs().get(1));
+        circuit.attachInput(outputs[2], (Input)nor2.getInputs().get(0));
+        circuit.attachInput(outputs[3], (Input)nor2.getInputs().get(1));
+        circuit.attachInput(nor1.getOutputs().get(0),xnor1.getInputs().get(0));
+        circuit.attachInput(nor2.getOutputs().get(0),xnor1.getInputs().get(1));
+        
+        System.out.println(xnor1.getOutputs().get(0).getData());
+        outputs[0].setData(true);
+        outputs[1].setData(true);
+        System.out.println(xnor1.getOutputs().get(0).getData());
+        CircuitComponent not = new Not();
+        System.out.println(not.getOutputs().get(0).getData());*/
+        
+        
+<span class="nc" id="L85">        CircuitComponent and1 = new And();</span>
+<span class="nc" id="L86">        CircuitComponent and2 = new And();</span>
+<span class="nc" id="L87">        CircuitComponent xor1 = new Xor();</span>
+<span class="nc" id="L88">        Circuit circuit = new Circuit();</span>
+<span class="nc" id="L89">        circuit.addCircuitComponent(and1);</span>
+<span class="nc" id="L90">        circuit.addCircuitComponent(and2);</span>
+<span class="nc" id="L91">        circuit.addCircuitComponent(xor1);</span>
+<span class="nc" id="L92">        circuit.attachInput(and1.getOutputs().get(0), xor1.getInputs().get(0));</span>
+<span class="nc" id="L93">        circuit.attachInput(and2.getOutputs().get(0), xor1.getInputs().get(1));</span>
+<span class="nc" id="L94">        and1.getInputs().get(0).setData(false);</span>
+<span class="nc" id="L95">        and1.getInputs().get(1).setData(false);</span>
+<span class="nc" id="L96">        System.out.println(xor1.getOutputs().get(0).getData());</span>
+        
+<span class="nc" id="L98">    }</span>
+    
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

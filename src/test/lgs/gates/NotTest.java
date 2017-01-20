@@ -24,6 +24,7 @@ public class NotTest {
     public void testGetResult() {
         System.out.println("getResult");
         Not g = new Not();
+        assertEquals(false, g.getResult(-1));
         testCombinations(g);  
         setFirstCombination(g);
         assertEquals(true, g.getResult(0));
@@ -43,6 +44,7 @@ public class NotTest {
         assertEquals(true, g.getResult(0));
         setSecondCombination(g);
         assertEquals(false, g.getResult(0));
+        assertEquals(false, g.getResult(-1));
     }
     
     

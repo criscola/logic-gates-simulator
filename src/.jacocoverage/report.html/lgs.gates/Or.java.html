@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Or.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;logic-gates-simulator&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">lgs.gates</a> &gt; <span class="el_source">Or.java</span></div><h1>Or.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package lgs.gates;
+
+import java.util.LinkedList;
+import lgs.model.CircuitComponent;
+import lgs.model.Input;
+import lgs.model.Output;
+import lgs.model.Pin;
+
+/**
+ *
+ * @author Dias
+ */
+public class Or extends CircuitComponent{
+    public Or() {
+<span class="fc" id="L20">        super(new LinkedList&lt;&gt;(), new LinkedList&lt;&gt;());</span>
+<span class="fc" id="L21">        getInputs().add(new Input(this));</span>
+<span class="fc" id="L22">        getInputs().add(new Input(this));</span>
+<span class="fc" id="L23">        getOutputs().add(new Output(this));</span>
+<span class="fc" id="L24">        setResults();</span>
+<span class="fc" id="L25">    }</span>
+    
+    @Override
+    public boolean getResult(int outputIndex){
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if(outputIndex == 0){</span>
+<span class="fc bfc" id="L30" title="All 4 branches covered.">            return inputs.get(0).getData() || inputs.get(1).getData();</span>
+        }
+<span class="fc" id="L32">        return false;</span>
+    }
+    @Override
+    public void setResults(){
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        for(int i = 0; i &lt; getOutputs().size(); i++)</span>
+<span class="fc" id="L37">            getOutputs().get(i).setData(getResult(i));</span>
+<span class="fc" id="L38">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

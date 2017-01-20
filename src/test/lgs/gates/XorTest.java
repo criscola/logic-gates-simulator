@@ -24,6 +24,7 @@ public class XorTest {
     public void testGetResult() {
         System.out.println("getResult");
         Xor g = new Xor();
+        assertEquals(false, g.getResult(-1));
         testCombinations(g);  
         setFirstCombination(g);
         assertEquals(false, g.getResult(0));
@@ -64,5 +65,6 @@ public class XorTest {
         assertEquals(false, g.getResult(0));
         setFourthCombination(g);
         assertEquals(true, g.getResult(0));
+        assertEquals(false, g.getResult(-1));
     }
 }

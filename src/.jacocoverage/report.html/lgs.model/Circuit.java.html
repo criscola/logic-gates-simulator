@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Circuit.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;logic-gates-simulator&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">lgs.model</a> &gt; <span class="el_source">Circuit.java</span></div><h1>Circuit.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package lgs.model;
+
+import java.util.LinkedList;
+
+/**
+ *
+ * @author Dias
+ */
+public class Circuit {
+    private LinkedList&lt;CircuitComponent&gt; components;
+    private LinkedList&lt;Output&gt; inputs;
+
+    public Circuit() {
+<span class="fc" id="L19">        this(new LinkedList&lt;&gt;(), new LinkedList&lt;&gt;());</span>
+<span class="fc" id="L20">    }</span>
+
+<span class="fc" id="L22">    public Circuit(LinkedList&lt;CircuitComponent&gt; components, LinkedList&lt;Output&gt; inputs) {</span>
+<span class="fc" id="L23">        this.components = components;</span>
+<span class="fc" id="L24">        this.inputs = inputs;</span>
+<span class="fc" id="L25">    }</span>
+
+    public void setInputs(LinkedList&lt;Output&gt; inputs) {
+<span class="fc" id="L28">        this.inputs = inputs;</span>
+<span class="fc" id="L29">    }</span>
+
+    public LinkedList&lt;CircuitComponent&gt; getComponents() {
+<span class="fc" id="L32">        return components;</span>
+    }
+
+    public LinkedList&lt;Output&gt; getInputs() {
+<span class="fc" id="L36">        return inputs;</span>
+    }
+
+    public void setComponents(LinkedList&lt;CircuitComponent&gt; components) {
+<span class="fc" id="L40">        this.components = components;</span>
+<span class="fc" id="L41">    }</span>
+    
+    public void addCircuitComponent(CircuitComponent component){
+<span class="fc" id="L44">        getComponents().add(component); </span>
+<span class="fc" id="L45">    }</span>
+    public void addInput(Pin input){
+<span class="fc" id="L47">        this.inputs.add((Output)input);</span>
+        
+<span class="fc" id="L49">    }</span>
+    /**
+     * Method to attach an output to an input, when the former changes, the latter changes too. It can be seen as a broadcast
+     * @param output The pin which needs to notify its change
+     * @param input The Pin which needs to observe the observable object
+     */
+    public void attachInput(Pin output, Pin input){
+<span class="fc" id="L56">        ((Output)output).addObserver((Input)input);</span>
+<span class="fc" id="L57">        ((Output)output).changedPinInput();</span>
+<span class="fc" id="L58">    }</span>
+    /**
+     * Method to deattach an output from an input, the latter will no longer change when the former changes
+     * @param output The output that needs to be deattached
+     * @param input The input that needs to be deattached
+     */
+    public void deattachInput(Pin output, Pin input){
+<span class="fc" id="L65">        ((Output)output).deleteObserver((Input)input);</span>
+<span class="fc" id="L66">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

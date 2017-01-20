@@ -24,6 +24,7 @@ public class OrTest {
     public void testGetResult() {
         System.out.println("getResult");
         Or g = new Or();
+        assertEquals(false, g.getResult(-1));
         testCombinations(g);  
         setFirstCombination(g);
         assertEquals(false, g.getResult(0));
@@ -64,6 +65,7 @@ public class OrTest {
         assertEquals(true, g.getResult(0));
         setFourthCombination(g);
         assertEquals(true, g.getResult(0));
+        assertEquals(false, g.getResult(-1));
     }
     
 }
