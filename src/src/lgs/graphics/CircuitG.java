@@ -16,12 +16,18 @@ public class CircuitG {
 
     private LinkedList<CircuitComponentG> components;
     private LinkedList<WireG> wires;
+    private LinkedList<Selector> selectors;
+
+    public LinkedList<Selector> getSelectors() {
+        return selectors;
+    }
     private final Circuit circuit;
 
     public CircuitG() {
         circuit = new Circuit();
         components = new LinkedList<>();
         wires = new LinkedList<>();
+        selectors = new LinkedList<>();
     }
 
     public Circuit getCircuit() {

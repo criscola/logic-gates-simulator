@@ -16,7 +16,11 @@ import lgs.model.Pin;
  *
  * @author Dias
  */
-public class Xor extends CircuitComponent{
+public class Xor extends CircuitComponent {
+
+    public static final int DEFAULT_INPUT_COUNT = 2;
+    public static final boolean INPUT_MODIFIABLE = false;
+
     public Xor() {
         super(new LinkedList<>(), new Output());
         super.getOutput().setAttachedTo(this);
@@ -24,13 +28,14 @@ public class Xor extends CircuitComponent{
             super.getInputs().add(new Input(this));
         }
     }
-    
+
     @Override
-    public boolean getResult(){
+    public boolean getResult() {
         return inputs.get(0).getData() ^ inputs.get(1).getData();
     }
-    public void setResults(){
+
+    public void setResults() {
         output.setData(getResult());
     }
-    
+
 }

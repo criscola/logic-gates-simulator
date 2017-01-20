@@ -15,14 +15,19 @@ import lgs.model.CircuitComponent;
 public abstract class CircuitComponentG extends Graphics {
     
     private final CircuitComponent component;
+    private final boolean isInputModifiable;
     
     public CircuitComponent getComponent() {
         return component;
     }
     
-    public CircuitComponentG(CircuitComponent component) {
+    public CircuitComponentG(CircuitComponent component, boolean isInputModifiable) {
         super(new Point(0, 0), new Dimension(0, 0));
         this.component = component;
+        this.isInputModifiable = isInputModifiable;
     }
     
+    public boolean isInputModifiable() {
+        return isInputModifiable;
+    }
 }

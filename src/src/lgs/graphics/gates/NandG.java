@@ -27,7 +27,7 @@ import lgs.utils.GraphicElement;
 public class NandG extends CircuitComponentG {
 
     public NandG(int x, int y) {
-        super(new Nand());
+        super(new Nand(), Nand.INPUT_MODIFIABLE);
 
         super.setOrigin(new Point(x, y));
         super.setSize(new Dimension(80, super.getComponent().getInputs().size() * 50));

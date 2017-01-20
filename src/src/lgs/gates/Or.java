@@ -15,7 +15,11 @@ import lgs.model.Output;
  *
  * @author Dias
  */
-public class Or extends CircuitComponent{
+public class Or extends CircuitComponent {
+
+    public static final int DEFAULT_INPUT_COUNT = 2;
+    public static final boolean INPUT_MODIFIABLE = true;
+
     public Or() {
         super(new LinkedList<>(), new Output());
         super.getOutput().setAttachedTo(this);
@@ -23,13 +27,14 @@ public class Or extends CircuitComponent{
             super.getInputs().add(new Input(this));
         }
     }
-    
+
     @Override
-    public boolean getResult(){
+    public boolean getResult() {
         return inputs.get(0).getData() || inputs.get(1).getData();
     }
-    public void setResults(){
+
+    public void setResults() {
         output.setData(getResult());
     }
-    
+
 }

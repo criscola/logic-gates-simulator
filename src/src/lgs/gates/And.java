@@ -16,6 +16,7 @@ import lgs.model.*;
 public class And extends CircuitComponent {
 
     public static final int DEFAULT_INPUT_COUNT = 2;   
+    public static final boolean INPUT_MODIFIABLE = true;
     
     public And() {
         super(new LinkedList<>(), new Output());

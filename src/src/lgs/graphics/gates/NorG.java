@@ -27,7 +27,7 @@ import lgs.utils.GraphicElement;
 public class NorG extends CircuitComponentG {
 
     public NorG(int x, int y) {
-        super(new Nor());
+        super(new Nor(), Nor.INPUT_MODIFIABLE);
 
         super.setOrigin(new Point(x, y));
         super.setSize(new Dimension(80, super.getComponent().getInputs().size() * 50));

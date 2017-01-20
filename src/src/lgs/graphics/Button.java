@@ -21,45 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package lgs.utils;
+package lgs.graphics;
 
-import java.awt.Dimension;
-import java.awt.Point;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 /**
  *
  * @author A4XX-COLCRI
  */
-public final class GraphicElement {
+public class Button extends Graphics {
 
-    /**
-     * The size in pixels of the not dot on logic gates
-     */
-    public static int NOTDOT_SIZE = 10;
-    /**
-     * The size in pixels of the clickable dot on logic gates
-     */
-    public static int DOT_SIZE = 20; 
-    /**
-     * The padding assigned to Selector graphic objects
-     */
-    public static int SELECTOR_PADDING = 10;
-    
-    /**
-     * Draws the not dot on a logic gate
-     * @param origin
-     * @param size
-     * @param gc 
-     */
-    public static void drawNotDot(Point origin, Dimension size, GraphicsContext gc) {
-        gc.setFill(Color.WHITE);
-        int tx = origin.x + size.width;
-        int ty = origin.y + size.height / 2 - NOTDOT_SIZE / 2;
-        gc.fillOval(tx, ty, NOTDOT_SIZE, NOTDOT_SIZE);
-        gc.setFill(Color.BLACK);
-        gc.strokeOval(tx, ty, NOTDOT_SIZE, NOTDOT_SIZE);
+    private Image img;
+    private int x;
+    private int y;
+
+    public Button(Image img, int x, int y) {
+        this.img = img;
+        this.x = x;
+        this.y = y;
     }
 
+    @Override
+    public void drawShape(GraphicsContext gc) {
+        gc.drawImage(img, x, y);
+    }
 }

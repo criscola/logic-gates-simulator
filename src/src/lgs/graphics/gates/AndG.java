@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import lgs.gates.And;
+import static lgs.gates.And.INPUT_MODIFIABLE;
 import lgs.graphics.Graphics;
 import lgs.graphics.InputG;
 import lgs.graphics.OutputG;
@@ -26,7 +27,7 @@ import lgs.graphics.OutputG;
 public class AndG extends CircuitComponentG {
 
     public AndG(int x, int y) {
-        super(new And());
+        super(new And(), INPUT_MODIFIABLE);
 
         super.setOrigin(new Point(x, y));
         super.setSize(new Dimension(80, super.getComponent().getInputs().size() * 50));

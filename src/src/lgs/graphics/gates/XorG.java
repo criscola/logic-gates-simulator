@@ -26,7 +26,7 @@ import lgs.graphics.OutputG;
 public class XorG extends CircuitComponentG {
 
     public XorG(int x, int y) {
-        super(new Xor());
+        super(new Xor(), Xor.INPUT_MODIFIABLE);
 
         super.setOrigin(new Point(x, y));
         super.setSize(new Dimension(80, super.getComponent().getInputs().size() * 50));

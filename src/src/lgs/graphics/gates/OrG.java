@@ -26,7 +26,7 @@ import lgs.graphics.OutputG;
 public class OrG extends CircuitComponentG {
 
     public OrG(int x, int y) {
-        super(new Or());
+        super(new Or(), Or.INPUT_MODIFIABLE);
 
         super.setOrigin(new Point(x, y));
         super.setSize(new Dimension(80, super.getComponent().getInputs().size() * 50));

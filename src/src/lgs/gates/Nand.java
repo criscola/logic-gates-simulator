@@ -15,7 +15,10 @@ import lgs.model.Output;
  *
  * @author Dias
  */
-public class Nand extends CircuitComponent{
+public class Nand extends CircuitComponent {
+
+    public static final int DEFAULT_INPUT_COUNT = 2;
+    public static final boolean INPUT_MODIFIABLE = true;
 
     public Nand() {
         super(new LinkedList<>(), new Output());
@@ -25,10 +28,12 @@ public class Nand extends CircuitComponent{
         }
         setResults();
     }
-    public boolean getResult(){
-        return !(getInputs().get(0).getData() && getInputs().get(0).getData());
+
+    public boolean getResult() {
+        return !(getInputs().get(0).getData() && getInputs().get(1).getData());
     }
-    public void setResults(){
+
+    public void setResults() {
         output.setData(getResult());
     }
 }

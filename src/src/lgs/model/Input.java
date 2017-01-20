@@ -35,9 +35,10 @@ public class Input implements Observer, Pin {
     public void setData(boolean data) {
         if (data != getData()) {
             this.data = data;
-            attachedTo.setResults();
+            if (attachedTo != null) {
+                attachedTo.setResults();
+            }
         }
-
     }
 
     @Override

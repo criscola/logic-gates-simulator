@@ -27,7 +27,7 @@ import lgs.utils.GraphicElement;
 public class XnorG extends CircuitComponentG {
 
     public XnorG(int x, int y) {
-        super(new Xnor());
+        super(new Xnor(), Xnor.INPUT_MODIFIABLE);
 
         super.setOrigin(new Point(x, y));
         super.setSize(new Dimension(80, super.getComponent().getInputs().size() * 50));

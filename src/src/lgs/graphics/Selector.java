@@ -21,45 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package lgs.utils;
+package lgs.graphics;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
  *
  * @author A4XX-COLCRI
  */
-public final class GraphicElement {
+public class Selector extends Graphics {
 
-    /**
-     * The size in pixels of the not dot on logic gates
-     */
-    public static int NOTDOT_SIZE = 10;
-    /**
-     * The size in pixels of the clickable dot on logic gates
-     */
-    public static int DOT_SIZE = 20; 
-    /**
-     * The padding assigned to Selector graphic objects
-     */
-    public static int SELECTOR_PADDING = 10;
-    
-    /**
-     * Draws the not dot on a logic gate
-     * @param origin
-     * @param size
-     * @param gc 
-     */
-    public static void drawNotDot(Point origin, Dimension size, GraphicsContext gc) {
-        gc.setFill(Color.WHITE);
-        int tx = origin.x + size.width;
-        int ty = origin.y + size.height / 2 - NOTDOT_SIZE / 2;
-        gc.fillOval(tx, ty, NOTDOT_SIZE, NOTDOT_SIZE);
-        gc.setFill(Color.BLACK);
-        gc.strokeOval(tx, ty, NOTDOT_SIZE, NOTDOT_SIZE);
+    private CircuitComponentG component;
+
+    public Selector(int x, int y, int width, int height, CircuitComponentG component) {
+        super.setOrigin(new Point(x, y));
+        super.setSize(new Dimension(width, height));
+        //super.getChildren().add(new Button(new Image(getClass().getResourceAsStream("utils/Plus-48.png")), x + width, y));
+        //super.getChildren().add(new Button(new Image(getClass().getResourceAsStream("utils/Minus-48.png")), x + width, y + 48));
+        this.component = component;
     }
 
+    public CircuitComponentG getComponent() {
+        return component;
+    }   
+    
+    @Override
+    public void drawShape(GraphicsContext gc) {
+        gc.setStroke(Color.BLUE);
+        double t = gc.getLineWidth();
+        gc.setLineWidth(2);
+        gc.strokeRoundRect(super.getOrigin().x, super.getOrigin().y, super.getSize().width, super.getSize().height, 8, 2);
+        gc.setLineWidth(t);
+        gc.setStroke(Color.BLACK);
+        //drawChildren(gc);
+    }
 }

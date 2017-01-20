@@ -23,9 +23,9 @@
  */
 package lgs;
 
+import java.awt.Rectangle;
 import java.util.LinkedHashMap;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -36,32 +36,37 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-import lgs.graphics.gates.AndG;
-import lgs.model.Circuit;
 import lgs.graphics.CircuitComponentG;
+import lgs.model.Circuit;
 import lgs.graphics.CircuitG;
 import lgs.graphics.InputG;
 import lgs.graphics.OutputG;
 import lgs.graphics.PinG;
+import lgs.graphics.Selector;
 import lgs.graphics.WireG;
+import lgs.graphics.gates.AndG;
 import lgs.graphics.gates.NandG;
 import lgs.graphics.gates.NorG;
 import lgs.graphics.gates.NotG;
 import lgs.graphics.gates.OrG;
 import lgs.graphics.gates.XnorG;
 import lgs.graphics.gates.XorG;
+import lgs.model.Input;
+import lgs.model.Output;
 import lgs.utils.Component;
+import static lgs.utils.GraphicElement.DOT_SIZE;
+import static lgs.utils.GraphicElement.SELECTOR_PADDING;
 
 /**
  *
@@ -115,6 +120,12 @@ public class LgsGui extends Application {
     CircuitG gCircuit = new CircuitG();
 
     PinG currentSelectedPin = null;
+
+    Selector currentSelector = null;
+
+    Image plus = null;
+
+    Image minus = null;
 
     Stage primaryStage;
 
@@ -221,22 +232,56 @@ public class LgsGui extends Application {
             int componentCount = gCircuit.getComponents().size();
             for (int i = 0; i < componentCount; i++) {
                 int childrenCount = gCircuit.getComponents().get(i).getChildren().size();
+                // Selettore
+                CircuitComponentG gate = gCircuit.getComponents().get(i);
+                Rectangle gateArea = new Rectangle(gate.getOrigin(), gate.getSize());
+                if (event.getClickCount() == 2) {
+                    if (gateArea.contains(event.getX(), event.getY())) {
+                        currentSelector = new Selector(gate.getOrigin().x - PinG.WIDTH - DOT_SIZE,
+                            gate.getOrigin().y - SELECTOR_PADDING, gate.getSize().width + 2 * (PinG.WIDTH + DOT_SIZE),
+                            gate.getSize().height + 2 * SELECTOR_PADDING, gate);
+                    } else {
+                        currentSelector = null;
+                    }
+                }
+
                 for (int j = 0; j < childrenCount; j++) {
                     PinG pin = (PinG) gCircuit.getComponents().get(i).getChildren().get(j);
                     // L'utente ha premuto sul pin di una porta logica?
                     if (pin.getDot().contains(event.getX(), event.getY())) {
                         // L'utente premeva anche il tasto control?
                         if (event.isControlDown()) {
-                            if (event.getClickCount() == 2) {
-                                System.out.println("Double clicked");
-                            }
                             InputG inputPin = null;
                             OutputG outputPin = null;
+                            //  Codice per eliminare i wire
+                            if (pin.isWired()) {
+                                for (int k = 0; k < gCircuit.getWires().size(); k++) {
+                                    if (gCircuit.getWires().get(k).input.equals(pin) || gCircuit.getWires().get(k).output.equals(pin)) {
+                                        Input inputComponent;
+                                        Output outputComponent;
+                                        if (pin.getClass().isInstance(new InputG())) {
+                                            inputPin = (InputG) pin;
+                                            inputComponent = inputPin.getComponent();
+                                            outputComponent = inputComponent.
+                                        } else if (pin.getClass().isInstance(new OutputG())) {
+                                            outputPin = (OutputG) pin;
+                                            outputComponent = outputPin.getComponent();
+                                        }
+                                        gCircuit.getCircuit().deattachInput(outputComponent, inputComponent);
+                                        gCircuit.getWires().get(k).input.setWired(false);
+                                        gCircuit.getWires().get(k).output.setWired(false);
+                                        gCircuit.getWires().remove(k);
+                                        currentSelectedPin = null;
+                                        repaint(gc);
+                                        return;
+                                    }
+                                }
+                            }
+                            
                             // Se l'utente ha già selezionato un pin in precedenza e non ha selezionato lo stesso
                             // e inoltre se l'utente non ha cliccato su pin già collegati
                             if (currentSelectedPin != null && !currentSelectedPin.equals(pin) && !currentSelectedPin.isWired()
                                     && !pin.isWired()) {
-                                System.out.println("1");
                                 if (currentSelectedPin.getClass().isInstance(new InputG()) && pin.getClass().isInstance(new OutputG())) {
                                     inputPin = (InputG) currentSelectedPin;
                                     outputPin = (OutputG) pin;
@@ -321,12 +366,26 @@ public class LgsGui extends Application {
     }
 
     private void repaint(GraphicsContext gc) {
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         // Disegno porte logiche
         for (CircuitComponentG element : gCircuit.getComponents()) {
             element.drawShape(gc);
         }
         for (WireG element : gCircuit.getWires()) {
             element.drawShape(gc);
+        }
+        if (currentSelector != null) {
+            currentSelector.drawShape(gc);
+            if (currentSelector.getComponent().isInputModifiable()) {
+                plus = new Image(getClass().getResourceAsStream("utils/Plus-48.png"));
+                gc.drawImage(plus,
+                        currentSelector.getOrigin().x + currentSelector.getSize().width + 10,
+                        currentSelector.getOrigin().y);
+                minus = new Image(getClass().getResourceAsStream("utils/Minus-48.png"));
+                gc.drawImage(minus,
+                        currentSelector.getOrigin().x + currentSelector.getSize().width + 10,
+                        currentSelector.getOrigin().y + 48);
+            }   
         }
     }
 
