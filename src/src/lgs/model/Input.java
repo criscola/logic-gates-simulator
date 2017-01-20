@@ -16,15 +16,25 @@ public class Input implements Observer, Pin {
 
     private boolean data = false;
     private CircuitComponent attachedTo;
-
+    private Output outputComponent;
+    
     public Input() {
 
     }
 
     public Input(CircuitComponent attachedTo) {
         this.attachedTo = attachedTo;
+        outputComponent = null;
     }
 
+    public Output getOutputComponent() {
+        return outputComponent;
+    }
+
+    public void setOutputComponent(Output outputComponent) {
+        this.outputComponent = outputComponent;
+    }
+    
     @Override
     public void update(Observable o, Object arg) {
         Output output = (Output) arg;

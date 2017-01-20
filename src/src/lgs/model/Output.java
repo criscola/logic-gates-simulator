@@ -13,6 +13,7 @@ public class Output extends Observable implements Pin {
     
     private boolean data = false;
     private CircuitComponent attachedTo;
+    private Input inputComponent;
     
     public Output() {
         
@@ -20,11 +21,20 @@ public class Output extends Observable implements Pin {
     
     public Output(CircuitComponent attachedTo) {
         this.attachedTo = attachedTo;
+        inputComponent = null;
     }
     
     public void changedPinInput() {
         setChanged();
         notifyObservers(this);
+    }
+
+    public Input getInputComponent() {
+        return inputComponent;
+    }
+
+    public void setInputComponent(Input inputComponent) {
+        this.inputComponent = inputComponent;
     }
     
     @Override

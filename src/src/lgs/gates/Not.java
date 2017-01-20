@@ -19,6 +19,7 @@ public class Not extends CircuitComponent {
     
     public static final int DEFAULT_INPUT_COUNT = 1; 
     public static final boolean INPUT_MODIFIABLE = false;
+    
     public Not() {
         super(new LinkedList<>(), new Output());
         super.getOutput().setAttachedTo(this);

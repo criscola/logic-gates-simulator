@@ -262,12 +262,15 @@ public class LgsGui extends Application {
                                         if (pin.getClass().isInstance(new InputG())) {
                                             inputPin = (InputG) pin;
                                             inputComponent = inputPin.getComponent();
-                                            outputComponent = inputComponent.
+                                            outputComponent = inputComponent.getOutputComponent();
+                                            gCircuit.getCircuit().deattachInput(outputComponent, inputComponent);
+                                            
                                         } else if (pin.getClass().isInstance(new OutputG())) {
                                             outputPin = (OutputG) pin;
                                             outputComponent = outputPin.getComponent();
+                                            inputComponent = outputComponent.getInputComponent();
+                                            gCircuit.getCircuit().deattachInput(outputComponent, inputComponent);
                                         }
-                                        gCircuit.getCircuit().deattachInput(outputComponent, inputComponent);
                                         gCircuit.getWires().get(k).input.setWired(false);
                                         gCircuit.getWires().get(k).output.setWired(false);
                                         gCircuit.getWires().remove(k);
@@ -292,6 +295,8 @@ public class LgsGui extends Application {
                                 // Collega insieme i 2 pin
                                 if (inputPin != null && outputPin != null
                                         && inputPin.getComponent().getAttachedTo() != outputPin.getComponent().getAttachedTo()) {
+                                    inputPin.getComponent().setOutputComponent(outputPin.getComponent());
+                                    outputPin.getComponent().setInputComponent(inputPin.getComponent());
                                     outputPin.getComponent().addObserver(inputPin.getComponent());
                                     int x1 = inputPin.getOrigin().x - PinG.WIDTH;
                                     int y1 = inputPin.getOrigin().y;
