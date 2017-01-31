@@ -92,9 +92,22 @@ public class NewMain {
         circuit.attachInput(and1.getOutputs().get(0), xor1.getInputs().get(0));
         circuit.attachInput(and2.getOutputs().get(0), xor1.getInputs().get(1));
         and1.getInputs().get(0).setData(false);
-        and1.getInputs().get(1).setData(false);
+        and1.getInputs().get(1).setData(true);
         System.out.println(xor1.getOutputs().get(0).getData());
-        
+        CircuitComponent clock = new Clock();
+        clock.getInputs().get(0).setData(true);
+        circuit.attachInput(clock.getOutputs().get(0), and1.getInputs().get(0));
+        int a = 0;
+        while(true){
+            System.out.println(xor1.getOutputs().get(0).getData());
+            try{
+                a += 250;
+                Thread.sleep(250);
+                if(a == 5000)
+                    clock.getInputs().get(0).setData(false);
+            }
+            catch(InterruptedException ex){}
+        }
     }
     
     
