@@ -23,6 +23,7 @@
  */
 package lgs.graphics;
 
+import java.awt.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -33,17 +34,19 @@ import javafx.scene.image.Image;
 public class Button extends Graphics {
 
     private Image img;
-    private int x;
-    private int y;
+    private Rectangle buttonArea;
+
+    public Rectangle getButtonArea() {
+        return buttonArea;
+    }
 
     public Button(Image img, int x, int y) {
         this.img = img;
-        this.x = x;
-        this.y = y;
+        buttonArea = new Rectangle(x, y, (int) img.getWidth(), (int) img.getHeight());
     }
 
     @Override
     public void drawShape(GraphicsContext gc) {
-        gc.drawImage(img, x, y);
+        gc.drawImage(img, buttonArea.x, buttonArea.y);
     }
 }

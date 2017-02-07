@@ -290,6 +290,15 @@ public class LgsGui extends Application {
         });
 
         canvas.setOnMouseClicked((MouseEvent event) -> {
+            if (gCircuit.getSelectors().size() > 0) {
+                for (int i = 0; i < gCircuit.getSelectors().size(); i++) {/*
+                    Rectangle buttonArea = gCircuit.getSelectors().get(i).;
+                    if (event.getX() == ) {
+                        
+                    }*/
+                }
+
+            }
             int componentCount = gCircuit.getComponents().size();
             for (int i = 0; i < componentCount; i++) {
                 int childrenCount = gCircuit.getComponents().get(i).getChildren().size();
@@ -301,11 +310,9 @@ public class LgsGui extends Application {
                         currentSelector = new Selector(gate.getOrigin().x - PinG.WIDTH - DOT_SIZE,
                                 gate.getOrigin().y - SELECTOR_PADDING, gate.getSize().width + 2 * (PinG.WIDTH + DOT_SIZE),
                                 gate.getSize().height + 2 * SELECTOR_PADDING, gate);
-                        System.out.println("settato a " + currentSelector.toString());
                         break;
                     } else {
                         currentSelector = null;
-                        System.out.println("settato a null");
                         continue;
                     }
                 }
@@ -446,16 +453,6 @@ public class LgsGui extends Application {
         }
         if (currentSelector != null) {
             currentSelector.drawShape(gc);
-            if (currentSelector.getComponent().isInputModifiable()) {
-                plus = new Image(getClass().getResourceAsStream("utils/Plus-48.png"));
-                gc.drawImage(plus,
-                        currentSelector.getOrigin().x + currentSelector.getSize().width + 10,
-                        currentSelector.getOrigin().y);
-                minus = new Image(getClass().getResourceAsStream("utils/Minus-48.png"));
-                gc.drawImage(minus,
-                        currentSelector.getOrigin().x + currentSelector.getSize().width + 10,
-                        currentSelector.getOrigin().y + 48);
-            }
         }
     }
 

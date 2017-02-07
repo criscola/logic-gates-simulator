@@ -40,17 +40,19 @@ public class Selector extends Graphics {
     private CircuitComponentG component;
 
     public Selector(int x, int y, int width, int height, CircuitComponentG component) {
+        this.component = component;
         super.setOrigin(new Point(x, y));
         super.setSize(new Dimension(width, height));
-        //super.getChildren().add(new Button(new Image(getClass().getResourceAsStream("utils/Plus-48.png")), x + width, y));
-        //super.getChildren().add(new Button(new Image(getClass().getResourceAsStream("utils/Minus-48.png")), x + width, y + 48));
-        this.component = component;
+        if (component.isInputModifiable()) {
+            super.getChildren().add(new Button(new Image(getClass().getResourceAsStream("utils/Plus-48.png")), x + width, y));
+            super.getChildren().add(new Button(new Image(getClass().getResourceAsStream("utils/Minus-48.png")), x + width, y + 48));
+        }
     }
 
     public CircuitComponentG getComponent() {
         return component;
-    }   
-    
+    }
+
     @Override
     public void drawShape(GraphicsContext gc) {
         gc.setStroke(Color.BLUE);
@@ -59,6 +61,6 @@ public class Selector extends Graphics {
         gc.strokeRoundRect(super.getOrigin().x, super.getOrigin().y, super.getSize().width, super.getSize().height, 8, 2);
         gc.setLineWidth(t);
         gc.setStroke(Color.BLACK);
-        //drawChildren(gc);
+        drawChildren(gc);
     }
 }
